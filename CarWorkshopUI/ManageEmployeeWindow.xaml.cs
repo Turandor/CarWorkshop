@@ -66,8 +66,6 @@ namespace CarWorkshopUI
             objMainWindow.Show();
         }
 
-
-        /***********************************************************************************/ //TO DO
         private void deleteEmployee_Click(object sender, RoutedEventArgs e) 
         {
             EmployeeModel employee = new EmployeeModel();

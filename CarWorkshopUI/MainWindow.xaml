@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Label Content="PANEL MENEDŻERSKI" HorizontalAlignment="Left" Height="46" Margin="260,10,0,0" VerticalAlignment="Top" Width="280" FontSize="26" FontWeight="Bold"/>
+        <Label Content="PANEL MENEDŻERSKI" Height="46" Margin="257,10,256.6,0" VerticalAlignment="Top" FontSize="26" FontWeight="Bold"/>
         <Button x:Name="manageEmployeeButton" Content="Zarządzaj pracownikami" HorizontalAlignment="Left" Height="54" Margin="50,80,0,0" VerticalAlignment="Top" Width="225" FontSize="18" Click="manageEmployeeButton_Click"/>
+        <Button x:Name="manageWarehouseButton" Content="Zarządzaj magazynem" HorizontalAlignment="Right" Height="54" Margin="0,80,50,0" VerticalAlignment="Top" Width="225" FontSize="18" Click="manageWarehouseButton_Click"/>
     </Grid>
 </Window>

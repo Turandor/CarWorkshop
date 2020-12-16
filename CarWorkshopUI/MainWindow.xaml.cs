@@ -30,5 +30,12 @@ namespace CarWorkshopUI
             this.Visibility = Visibility.Hidden;
             objManageEmployeeWindow.Show();
         }
+
+        private void manageWarehouseButton_Click(object sender, RoutedEventArgs e)
+        {
+            ManageWarehouseWindow objManageWarehouseWindow = new ManageWarehouseWindow();
+            this.Visibility = Visibility.Hidden;
+            objManageWarehouseWindow.Show();
+        }
     }
 }

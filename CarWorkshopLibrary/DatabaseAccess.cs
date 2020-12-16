@@ -57,5 +57,23 @@ namespace CarWorkshopLibrary
                 cnn.Execute("delete from Employee where firstName=@firstName and lastName=@lastName and specialization=@specialization", employee);
             }
         }
+
+        public static List<WarehouseModel> loadWarehouse()
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                var output = cnn.Query<WarehouseModel>("select * from Warehouse", new DynamicParameters());
+                return output.ToList();
+            }
+        }
+
+        public static void saveWarehouse(WarehouseModel warehouse)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                cnn.Execute("insert into Warehouse (partName, producent, price, stockQuantity, deliveryTime) values (@partName, @producent, @price, @stockQuantity, @deliveryTime)", warehouse);
+            }
+        }
+
     }
 }
