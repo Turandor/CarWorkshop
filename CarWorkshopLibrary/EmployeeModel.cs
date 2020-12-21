@@ -12,13 +12,5 @@ namespace CarWorkshopLibrary
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string specialization { get; set; }
-
-        public string fullInfromation
-        {
-            get
-            {
-                return $"{ firstName } { lastName } { specialization }";
-            }
-        }
     }
 }

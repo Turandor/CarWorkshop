@@ -16,10 +16,18 @@
         <TextBox x:Name="lastNameText" HorizontalAlignment="Left" Height="23" Margin="42,176,0,0" TextWrapping="Wrap" Text="McDonald" VerticalAlignment="Top" Width="261"/>
         <TextBox x:Name="specializationText" HorizontalAlignment="Left" Height="23" Margin="42,241,0,0" TextWrapping="Wrap" Text="Wulkanizator" VerticalAlignment="Top" Width="261"/>
         <Button x:Name="addEmployeeButton" Content="Dodaj pracownika" HorizontalAlignment="Left" Margin="385,360,0,0" VerticalAlignment="Top" Width="185" Height="41" FontSize="18" Click="addEmployeeButton_Click" RenderTransformOrigin="3.305,2.576"/>
-        <Button x:Name="refreshListButton" Content="Odśwież listę" HorizontalAlignment="Left" Margin="629,37,0,0" VerticalAlignment="Top" Width="120" Height="41" FontSize="18" Click="refreshListButton_Click"/>
-        <ListBox x:Name="listEmployeesListBox" HorizontalAlignment="Left" Height="281" Margin="385,79,0,0" VerticalAlignment="Top" Width="364"/>
         <Button x:Name="goBackButton" Content="Wróć" HorizontalAlignment="Left" Height="26" Margin="42,375,0,0" VerticalAlignment="Top" Width="58" FontSize="18" Click="goBackButton_Click"/>
         <Button x:Name="deleteEmployee" Content="Usuń pracownika" HorizontalAlignment="Left" Margin="570,360,0,0" VerticalAlignment="Top" Width="179" Height="41" FontSize="18" Click="deleteEmployee_Click"/>
+        <ListView x:Name="listEmployeesListView" HorizontalAlignment="Left" Height="283" Margin="385,78,0,0" VerticalAlignment="Top" Width="364" ItemsSource="{Binding SourceCollection}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="Auto" Header="ID" DisplayMemberBinding="{Binding idEmployee}"/>
+                    <GridViewColumn Width="Auto" Header="Imię" DisplayMemberBinding="{Binding firstName}"/>
+                    <GridViewColumn Width="Auto" Header="Nazwisko" DisplayMemberBinding="{Binding lastName}" />
+                    <GridViewColumn Width="Auto" Header="Specjalizacja" DisplayMemberBinding="{Binding specialization}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
 
     </Grid>
 </Window>

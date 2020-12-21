@@ -54,7 +54,7 @@ namespace CarWorkshopLibrary
         {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
             {
-                cnn.Execute("delete from Employee where firstName=@firstName and lastName=@lastName and specialization=@specialization", employee);
+                cnn.Execute("delete from Employee where idEmployee=@idEmployee and firstName=@firstName and lastName=@lastName and specialization=@specialization", employee);
             }
         }
 
@@ -75,5 +75,12 @@ namespace CarWorkshopLibrary
             }
         }
 
+        public static void updateWarehouse(WarehouseModel warehouse)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                cnn.Execute("update Warehouse set stockQuantity = @stockQuantity where idParts = @idParts", warehouse);
+            }
+        }
     }
 }

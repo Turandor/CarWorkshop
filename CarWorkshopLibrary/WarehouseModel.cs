@@ -14,13 +14,5 @@ namespace CarWorkshopLibrary
         public string price { get; set; }
         public string stockQuantity { get; set; }
         public string deliveryTime { get; set; }
-
-        public string fullInfromation
-        {
-            get
-            {
-                return $"{ partName } { producent } { price } {stockQuantity} {deliveryTime}";
-            }
-        }
     }
 }

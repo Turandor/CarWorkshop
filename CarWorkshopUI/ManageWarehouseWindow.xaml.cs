@@ -33,9 +33,8 @@ namespace CarWorkshopUI
         }
         private void wireUpWarehouseList()
         {
-            listWarehouseListBox.ItemsSource = null;
-            listWarehouseListBox.ItemsSource = warehouse;
-            listWarehouseListBox.DisplayMemberPath = "fullInfromation";
+            listWarehouseListView.ItemsSource = null;
+            listWarehouseListView.ItemsSource = warehouse;
         }
 
         private void goBackButton_Click(object sender, RoutedEventArgs e)
@@ -43,11 +42,6 @@ namespace CarWorkshopUI
             MainWindow objMainWindow = new MainWindow();
             this.Visibility = Visibility.Hidden;
             objMainWindow.Show();
-        }
-
-        private void refreshListButton_Click(object sender, RoutedEventArgs e)
-        {
-            loadWarehouseList();
         }
 
         private void addWarehouseButton_Click(object sender, RoutedEventArgs e)
@@ -67,12 +61,23 @@ namespace CarWorkshopUI
             priceText.Text = "";
             stockQuantityText.Text = "";
             deliveryTimeText.Text = "";
+
+            loadWarehouseList();
         }
 
-        /*****************************************************************************************************/
-        private void addOnePartToWarehouseButton_Click(object sender, RoutedEventArgs e)
+        private void changeStockQuantityButton_Click(object sender, RoutedEventArgs e)
         {
+            WarehouseModel warehouse = new WarehouseModel();
 
+            var selectedPart = (dynamic)listWarehouseListView.SelectedItems[0];
+
+            selectedPart.stockQuantity = stockQuantityChangeText.Text;
+            warehouse.idParts = selectedPart.idParts;
+            warehouse.stockQuantity = selectedPart.stockQuantity;
+
+            DatabaseAccess.updateWarehouse(warehouse);
+
+            loadWarehouseList();
         }
     }
 

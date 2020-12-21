@@ -34,14 +34,8 @@ namespace CarWorkshopUI
 
         private void wireUpEmployeesList()
         {
-            listEmployeesListBox.ItemsSource = null;
-            listEmployeesListBox.ItemsSource = employee;
-            listEmployeesListBox.DisplayMemberPath = "fullInfromation";
-        }
-
-        private void refreshListButton_Click(object sender, EventArgs e)
-        {
-            loadEmployeesList();
+            listEmployeesListView.ItemsSource = null;
+            listEmployeesListView.ItemsSource = employee;
         }
 
         private void addEmployeeButton_Click(object sender, EventArgs e)
@@ -57,6 +51,8 @@ namespace CarWorkshopUI
             firstNameText.Text = "";
             lastNameText.Text = "";
             specializationText.Text = "";
+
+            loadEmployeesList();
         }
 
         private void goBackButton_Click(object sender, RoutedEventArgs e)
@@ -70,15 +66,17 @@ namespace CarWorkshopUI
         {
             EmployeeModel employee = new EmployeeModel();
 
-            employee.firstName = firstNameText.Text;
-            employee.lastName = lastNameText.Text;
-            employee.specialization = specializationText.Text;
+            var selectedEmployee = (dynamic)listEmployeesListView.SelectedItems[0];
+
+            employee.idEmployee = selectedEmployee.idEmployee;
+            employee.firstName = selectedEmployee.firstName;
+            employee.lastName = selectedEmployee.lastName;
+            employee.specialization = selectedEmployee.specialization;
+
 
             DatabaseAccess.deleteEmployee(employee);
 
-            firstNameText.Text = "";
-            lastNameText.Text = "";
-            specializationText.Text = "";
+            loadEmployeesList();
         }
     }
 }
