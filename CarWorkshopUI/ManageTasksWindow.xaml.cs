@@ -51,9 +51,9 @@ namespace CarWorkshopUI
             CarModel car = new CarModel();
             AppointmentModel appointment = new AppointmentModel();
             
-            custormer = customers.Find(x => x.firstName == custormer.firstName &&
-                                                x.lastName == custormer.lastName &&
-                                                x.phoneNumber == custormer.phoneNumber);
+            custormer = customers.Find(x => x.firstName == firstNameText.Text &&
+                                                x.lastName == lastNameText.Text &&
+                                                x.phoneNumber == phoneText.Text);
             if (custormer == null)
             {
                 custormer.firstName = firstNameText.Text;
