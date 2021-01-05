@@ -13,6 +13,6 @@ namespace CarWorkshopLibrary
         public string producent { get; set; }
         public string price { get; set; }
         public string stockQuantity { get; set; }
-        public string deliveryTime { get; set; }
+        //public string deliveryTime { get; set; }
     }
 }

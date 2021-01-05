@@ -21,7 +21,7 @@
         <Label Content="Ilość" HorizontalAlignment="Left" Height="32" Margin="42,269,0,0" VerticalAlignment="Top" Width="81" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
         <TextBox x:Name="stockQuantityText" HorizontalAlignment="Left" Height="23" Margin="42,306,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="81"/>
         <Label Content="Czas dostawy (w dniach):" HorizontalAlignment="Left" Height="32" Margin="128,269,0,0" VerticalAlignment="Top" Width="175" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
-        <TextBox x:Name="deliveryTimeText" HorizontalAlignment="Left" Height="23" Margin="128,306,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="175"/>
+        <!--<TextBox x:Name="deliveryTimeText" HorizontalAlignment="Left" Height="23" Margin="128,306,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="175"/>-->
         <TextBox x:Name="stockQuantityChangeText"  HorizontalAlignment="Left" Height="40" Margin="641,361,44.6,19" VerticalAlignment="Top" TextWrapping="Wrap" Width="108" FontSize="18" BorderBrush="#FF707070" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         <ListView x:Name="listWarehouseListView" HorizontalAlignment="Left" Height="283" Margin="385,78,0,0" VerticalAlignment="Top" Width="364" ItemsSource="{Binding SourceCollection}" HorizontalContentAlignment="Center">
             <ListView.View>
@@ -31,7 +31,7 @@
                     <GridViewColumn Width="Auto" Header="Producent" DisplayMemberBinding="{Binding producent}" />
                     <GridViewColumn Width="Auto" Header="Cena" DisplayMemberBinding="{Binding price}" />
                     <GridViewColumn Width="Auto" Header="Ilość" DisplayMemberBinding="{Binding stockQuantity}" />
-                    <GridViewColumn Width="Auto" Header="Czas dostawy" DisplayMemberBinding="{Binding deliveryTime}" />
+                    <!--<GridViewColumn Width="Auto" Header="Czas dostawy" DisplayMemberBinding="{Binding deliveryTime}" />-->
                 </GridView>
             </ListView.View>
         </ListView>

@@ -1,0 +1,27 @@
+﻿<Window x:Class="CarWorkshopUI.BrowseCalendarWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CarWorkshopUI"
+        mc:Ignorable="d"
+        Title="BrowseCalendarWindow" Height="450" Width="800">
+    <Grid>
+        <Button x:Name="goBackButton" Content="Wróć" HorizontalAlignment="Left" Height="26" Margin="42,375,0,0" VerticalAlignment="Top" Width="58" FontSize="18" Click="goBackButton_Click"/>
+        <Label Content="Przeglądanie kalendarza" HorizontalAlignment="Left" Height="37" Margin="42,37,0,0" VerticalAlignment="Top" Width="248" FontSize="20" FontWeight="Bold"/>
+        <Label Content="Wizyty w wybranym dniu" Height="37" Margin="385,41,157,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+        <ListView x:Name="listOrdersListView" HorizontalAlignment="Left" Height="283" Margin="385,78,0,0" VerticalAlignment="Top" Width="364" ItemsSource="{Binding SourceCollection}" HorizontalContentAlignment="Center">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="Auto" Header="Godzina" DisplayMemberBinding="{Binding idOrder}"/>
+                    <GridViewColumn Width="Auto" Header="ID Wizyty " DisplayMemberBinding="{Binding idParts}"/>
+                    <GridViewColumn Width="Auto" Header="Pracownik" DisplayMemberBinding="{Binding amount}" />
+                    <GridViewColumn Width="Auto" Header="Stanowisko" DisplayMemberBinding="{Binding orderDate}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Calendar HorizontalAlignment="Left" Margin="76,125,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.12,-1.213" Height="173" Width="197"/>
+
+
+    </Grid>
+</Window>

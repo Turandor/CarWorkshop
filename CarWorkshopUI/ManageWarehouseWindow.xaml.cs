@@ -40,8 +40,8 @@ namespace CarWorkshopUI
         private void goBackButton_Click(object sender, RoutedEventArgs e)
         {
             MainWindow objMainWindow = new MainWindow();
-            this.Visibility = Visibility.Hidden;
             objMainWindow.Show();
+            this.Close();
         }
 
         private void addWarehouseButton_Click(object sender, RoutedEventArgs e)
@@ -52,7 +52,7 @@ namespace CarWorkshopUI
             warehouse.producent = producentText.Text;
             warehouse.price = priceText.Text;
             warehouse.stockQuantity = stockQuantityText.Text;
-            warehouse.deliveryTime = deliveryTimeText.Text;
+            //warehouse.deliveryTime = deliveryTimeText.Text;
 
             DatabaseAccess.saveWarehouse(warehouse);
 
@@ -60,7 +60,7 @@ namespace CarWorkshopUI
             producentText.Text = "";
             priceText.Text = "";
             stockQuantityText.Text = "";
-            deliveryTimeText.Text = "";
+            //deliveryTimeText.Text = "";
 
             loadWarehouseList();
         }

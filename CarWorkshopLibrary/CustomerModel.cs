@@ -8,6 +8,7 @@ namespace CarWorkshopLibrary
 {
     public class CustomerModel
     {
+
         public int idCustomer { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }

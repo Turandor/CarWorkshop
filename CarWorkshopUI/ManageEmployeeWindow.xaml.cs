@@ -58,8 +58,8 @@ namespace CarWorkshopUI
         private void goBackButton_Click(object sender, RoutedEventArgs e)
         {
             MainWindow objMainWindow = new MainWindow();
-            this.Visibility = Visibility.Hidden;
             objMainWindow.Show();
+            this.Close();
         }
 
         private void deleteEmployee_Click(object sender, RoutedEventArgs e) 

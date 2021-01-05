@@ -24,6 +24,7 @@ namespace CarWorkshopUI
             InitializeComponent();
         }
 
+        // Change those buttons or back buttons bc they always create new windows without closing them later
         private void manageEmployeeButton_Click(object sender, RoutedEventArgs e)
         {
             ManageEmployeeWindow objManageEmployeeWindow = new ManageEmployeeWindow();
@@ -36,6 +37,27 @@ namespace CarWorkshopUI
             ManageWarehouseWindow objManageWarehouseWindow = new ManageWarehouseWindow();
             this.Visibility = Visibility.Hidden;
             objManageWarehouseWindow.Show();
+        }
+
+        private void manageOrdersButton_Click(object sender, RoutedEventArgs e)
+        {
+            ManageOrdersWindow objManageOrdersWindow = new ManageOrdersWindow();
+            this.Visibility = Visibility.Hidden;
+            objManageOrdersWindow.Show();
+        }
+
+        private void addTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            ManageTasksWindow objManageTasksWindow = new ManageTasksWindow();
+            this.Visibility = Visibility.Hidden;
+            objManageTasksWindow.Show();
+        }
+
+        private void browseCalendarButton_Click(object sender, RoutedEventArgs e)
+        {
+            BrowseCalendarWindow objBrowseCalendarWindow = new BrowseCalendarWindow();
+            this.Visibility = Visibility.Hidden;
+            objBrowseCalendarWindow.Show();
         }
     }
 }
