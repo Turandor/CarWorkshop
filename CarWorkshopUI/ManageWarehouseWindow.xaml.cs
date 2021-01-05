@@ -52,7 +52,6 @@ namespace CarWorkshopUI
             warehouse.producent = producentText.Text;
             warehouse.price = priceText.Text;
             warehouse.stockQuantity = stockQuantityText.Text;
-            //warehouse.deliveryTime = deliveryTimeText.Text;
 
             DatabaseAccess.saveWarehouse(warehouse);
 
@@ -60,7 +59,6 @@ namespace CarWorkshopUI
             producentText.Text = "";
             priceText.Text = "";
             stockQuantityText.Text = "";
-            //deliveryTimeText.Text = "";
 
             loadWarehouseList();
         }
