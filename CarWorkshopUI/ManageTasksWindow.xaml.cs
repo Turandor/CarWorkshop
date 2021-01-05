@@ -24,6 +24,9 @@ namespace CarWorkshopUI
         List<CarModel> cars = new List<CarModel>();
         List<ServiceModel> services = new List<ServiceModel>();
         List<AppointmentModel> appointments = new List<AppointmentModel>();
+        List<WarehouseModel> warehouse = new List<WarehouseModel>();
+        List<OrdersModel> orders = new List<OrdersModel>();
+
         public ManageTasksWindow()
         {
             InitializeComponent();
@@ -31,6 +34,8 @@ namespace CarWorkshopUI
             customers = DatabaseAccess.loadCustomers();
             cars = DatabaseAccess.loadCars();
             appointments = DatabaseAccess.loadAppointments();
+            warehouse = DatabaseAccess.loadWarehouse();
+            orders = DatabaseAccess.loadOrders();
 
             foreach (var item in services)
             {
@@ -98,34 +103,37 @@ namespace CarWorkshopUI
 
         private void calculateButton_Click(object sender, RoutedEventArgs e)
         {
-            //TO DO
-            //calculate date, employee and workplace
-            DateTime foundDate;
-            if (appointments.Count == 0)
+            string[] separator = new string[]{ ", " };
+            WarehouseModel part;
+            OrdersModel pendingOrder;
+
+            string[] neededParts = neededPartsText.Text.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var item in neededParts)
             {
-                foundDate = DateTime.UtcNow;
-            }
-            else
-            {
-                foreach (var item in appointments)
+                part = warehouse.Find(x => x.partName == item); //by names 
+                if (part == default) // jak co to sprawdzić default // zrobić wielokrotność potrzebnych części 1 rodzaju
                 {
-                    if (true) //if employee is free
+                    MessageBox.Show("Część: " + item + " nie jest znana");
+                    break;
+                }
+                else if (part.stockQuantity == 0)
+                {
+                    pendingOrder = orders.Find(x => x.idParts == part.idParts && x.status != "zrealizowane");  //do zastanowienia: więcej wizyt niż zamówień na te same częśći (3 silniki 4 wymiany)
+                    if (pendingOrder == default)
                     {
-                        if (true) //if workplace is free
-                        {
-                            foundDate = DateTime.UtcNow;
-                            if (foundDate.CompareTo(item.date.AddHours(item.estimatedTime)) >= 0) //make workday eg 6:00 - 18:00
-                                dateTextBlock.Content = foundDate;
-                            else
-                            {
-                                
-                            }
-                        }
+                        MessageBox.Show("Brak części: " + item + " w magazynie"); //rozwinąć ew (przechodzenie do zamówienia części
+                        break;
+                    }
+                    else
+                    {
+                        //TimeSpan orderDelay = pendingOrder.realizationDate - DateTime.UtcNow;
+                        DateTime orderDelay = pendingOrder.realizationDate;
                     }
                 }
-            }
+            } //all parts ready
+            
 
-            //calculate price
         }
     }
 }
