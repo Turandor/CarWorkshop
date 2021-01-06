@@ -155,8 +155,11 @@ namespace CarWorkshopUI
                     foreach (var item in collidingAppointments) // wolny pracownik i stanowisko
                     {
                         availableEmployees.Remove(availableEmployees.Find(x => x.idEmployee == item.idEmployee));
-                        availableWorkplaces.Remove(availableWorkplaces.Find(x => x.idEmployee == item.idEmployee));
+                        availableWorkplaces.Remove(availableWorkplaces.Find(x => x.idWorkplaces == item.idWorkplace));
                     }
+                    ServiceModel service = services.Find(x => x.serviceName == appointmentTypeComboBox.Text);
+                    
+                    availableEmployees.Find(x => x.specialization == )
                     dateTextBlock.Content = nearestDate;
                 }
                 else
