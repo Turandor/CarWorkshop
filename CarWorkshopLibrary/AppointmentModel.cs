@@ -33,7 +33,23 @@ namespace CarWorkshopLibrary
             }
             else return dateTmp;
         }
-        bool isWorkDay(DateTime dt)
+        public static DateTime GetFinishDate(DateTime date, double estimatedTime)
+        {
+            TimeSpan timeLeft;
+            DateTime dateTmp = date.AddHours(estimatedTime);
+            TimeSpan endTime = new TimeSpan(endHour, 0, 0);
+            if (dateTmp.TimeOfDay > endTime)
+            {
+                timeLeft = dateTmp.TimeOfDay - endTime;
+                return changeDateToNextWorkDay(dateTmp, timeLeft);
+            }
+            else return dateTmp;
+        }
+        public static DateTime RoundUp(DateTime dt, TimeSpan d)
+        {
+            return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
+        }
+        static bool isWorkDay(DateTime dt)
         {
             if (dt.DayOfWeek == DayOfWeek.Sunday || dt.DayOfWeek == DayOfWeek.Saturday)
                 return false;
@@ -41,15 +57,40 @@ namespace CarWorkshopLibrary
                 return true;
         }
 
-        bool isWorkHour(DateTime dt)
+        static bool isWorkHour(DateTime dt)
         {
             if (dt.Hour >= startHour && dt.Hour < endHour)
                 return true;
             else
                 return false;
         }
-
-        DateTime changeDateToNextWorkDay(DateTime dt, TimeSpan timeLeft) //  DateTime + TimeSpan  <- moze byc blad
+        static DateTime changeDateToNextWorkDay(DateTime dt) //  DateTime + TimeSpan  <- moze byc blad
+        {
+            TimeSpan ts = new TimeSpan(startHour, 0, 0);
+            if (isWorkDay(dt))
+            {
+                if (dt.DayOfWeek == DayOfWeek.Friday)
+                {
+                    return dt.AddDays(3) + ts;
+                }
+                else
+                {
+                    return dt.AddDays(1) + ts;
+                }
+            }
+            else
+            {
+                if (dt.DayOfWeek == DayOfWeek.Saturday)
+                {
+                    return dt.AddDays(2) + ts;
+                }
+                else
+                {
+                    return dt.AddDays(1) + ts;
+                }
+            }
+        }
+        static DateTime changeDateToNextWorkDay(DateTime dt, TimeSpan timeLeft) //  DateTime + TimeSpan  <- moze byc blad
         {
             TimeSpan ts = new TimeSpan(startHour, 0, 0) + timeLeft;
             dt = new DateTime(dt.Year, dt.Month, dt.Day);
