@@ -26,6 +26,8 @@ namespace CarWorkshopUI
         List<AppointmentModel> appointments = new List<AppointmentModel>();
         List<WarehouseModel> warehouse = new List<WarehouseModel>();
         List<OrdersModel> orders = new List<OrdersModel>();
+        int startHour = 9;  // Godzina startu pracy
+        int endHour = 17;   // Godzina konca pracy
 
         public ManageTasksWindow()
         {
@@ -106,6 +108,10 @@ namespace CarWorkshopUI
             string[] separator = new string[]{ ", " };
             WarehouseModel part;
             OrdersModel pendingOrder;
+            AppointmentModel employeeInAppointment;
+            DateTime nearestDate = RoundUp(DateTime.UtcNow, TimeSpan.FromMinutes(15));
+            
+
 
             string[] neededParts = neededPartsText.Text.Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
@@ -132,8 +138,70 @@ namespace CarWorkshopUI
                     }
                 }
             } //all parts ready
-            
 
+            if(true) // checkbox czy chcesz najblizszy termin
+            {
+                var appointmentsTmp = appointments.FindAll(x => x.date.Date == nearestDate.Date && x.date.Date == nearestDate.AddDays(-1).Date);
+                appointmentsTmp = appointmentsTmp.FindAll(x => x.date.TimeOfDay < nearestDate.TimeOfDay && x.date.AddHours(x.estimatedTime).TimeOfDay > nearestDate.TimeOfDay);
+                dateTextBlock.Content = nearestDate;
+                foreach (var item in appointments) // wolny pracownik i stanowisko
+                {
+                    employeeInAppointment = 
+                }
+            } 
+            else // wybierz termin
+            {
+
+            }
         }
+
+        DateTime RoundUp(DateTime dt, TimeSpan d)
+        {
+            return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
+        }
+
+        bool isWorkDay(DateTime dt)
+        {
+            if (dt.DayOfWeek == DayOfWeek.Sunday || dt.DayOfWeek == DayOfWeek.Saturday)
+                return false;
+            else
+                return true;
+        }
+
+        bool isWorkHour(DateTime dt)
+        {
+            if (dt.Hour >= startHour && dt.Hour < endHour)
+                return true;
+            else
+                return false;
+        }
+
+        DateTime changeDateToNextWorkDay(DateTime dt) //  DateTime + TimeSpan  <- moze byc blad
+        {
+            TimeSpan ts = new TimeSpan(startHour, 0, 0);
+            if (isWorkDay(dt))
+            {
+                if (dt.DayOfWeek == DayOfWeek.Friday)
+                {
+                    return dt.AddDays(3) + ts;
+                }
+                else
+                {
+                    return dt.AddDays(1) + ts;
+                }
+            }
+            else
+            {
+                if (dt.DayOfWeek == DayOfWeek.Saturday)
+                {
+                    return dt.AddDays(2) + ts;
+                }
+                else
+                {
+                    return dt.AddDays(1) + ts;
+                }
+            }
+        }
+
     }
 }

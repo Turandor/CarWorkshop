@@ -11,7 +11,7 @@ namespace CarWorkshopLibrary
         public int idParts { get; set; }
         public string partName { get; set; }
         public string producent { get; set; }
-        public double price { get; set; }  //było stringiem możliwe błędy
-        public int stockQuantity { get; set; } //było stringiem możliwe błędy
+        public double price { get; set; }  
+        public int stockQuantity { get; set; } 
     }
 }

@@ -50,8 +50,8 @@ namespace CarWorkshopUI
 
             warehouse.partName = partNameText.Text;
             warehouse.producent = producentText.Text;
-            warehouse.price = priceText.Text;
-            warehouse.stockQuantity = stockQuantityText.Text;
+            warehouse.price = double.Parse(priceText.Text);
+            warehouse.stockQuantity = int.Parse(stockQuantityText.Text);
 
             DatabaseAccess.saveWarehouse(warehouse);
 
