@@ -26,8 +26,7 @@ namespace CarWorkshopUI
         List<AppointmentModel> appointments = new List<AppointmentModel>();
         List<WarehouseModel> warehouse = new List<WarehouseModel>();
         List<OrdersModel> orders = new List<OrdersModel>();
-        int startHour = 9;  // Godzina startu pracy
-        int endHour = 17;   // Godzina konca pracy
+        List<EmployeeModel> employees = new List<EmployeeModel>();
 
         public ManageTasksWindow()
         {
@@ -38,6 +37,12 @@ namespace CarWorkshopUI
             appointments = DatabaseAccess.loadAppointments();
             warehouse = DatabaseAccess.loadWarehouse();
             orders = DatabaseAccess.loadOrders();
+            employees = DatabaseAccess.loadEmployees();
+
+            AppointmentModel cos = new AppointmentModel();
+            cos.date = DateTime.UtcNow;
+            cos.estimatedTime = 4;
+            MessageBox.Show(cos.date + "\n" + cos.GetFinishDate());
 
             foreach (var item in services)
             {
@@ -102,16 +107,14 @@ namespace CarWorkshopUI
             DatabaseAccess.saveAppointment(appointment);
             DatabaseAccess.loadAppointments();
         }
-
+        
         private void calculateButton_Click(object sender, RoutedEventArgs e)
         {
             string[] separator = new string[]{ ", " };
             WarehouseModel part;
             OrdersModel pendingOrder;
-            AppointmentModel employeeInAppointment;
-            DateTime nearestDate = RoundUp(DateTime.UtcNow, TimeSpan.FromMinutes(15));
+            DateTime nearestDate = AppointmentModel.RoundUp(DateTime.UtcNow, TimeSpan.FromMinutes(15));
             
-
 
             string[] neededParts = neededPartsText.Text.Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
@@ -141,79 +144,31 @@ namespace CarWorkshopUI
 
             if(true) // checkbox czy chcesz najblizszy termin
             {
-                var appointmentsTmp = appointments.FindAll(x => x.date.Date == nearestDate.Date && x.date.Date == nearestDate.AddDays(-1).Date);
-                appointmentsTmp = appointmentsTmp.FindAll(x => x.date.TimeOfDay < nearestDate.TimeOfDay && x.date.AddHours(x.estimatedTime).TimeOfDay > nearestDate.TimeOfDay);
-                dateTextBlock.Content = nearestDate;
-                foreach (var item in appointments) // wolny pracownik i stanowisko
+                var collidingAppointments = appointments.FindAll(x => (x.date < nearestDate && x.GetFinishDate() > nearestDate) ||
+                                                                      (x.date > nearestDate && x.GetFinishDate() < AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text))) ||
+                                                                      (x.date > nearestDate && x.date < AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text)) && x.GetFinishDate() > AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text))));
+                
+                if (collidingAppointments.Count != 0)
                 {
-                    employeeInAppointment = 
+                    List<EmployeeModel> availableEmployees = new List<EmployeeModel>(employees);
+                    List<WorkplaceModel> availableWorkplaces = new List<WorkplaceModel>(workplaces);
+                    foreach (var item in collidingAppointments) // wolny pracownik i stanowisko
+                    {
+                        availableEmployees.Remove(availableEmployees.Find(x => x.idEmployee == item.idEmployee));
+                        availableWorkplaces.Remove(availableWorkplaces.Find(x => x.idEmployee == item.idEmployee));
+                    }
+                    dateTextBlock.Content = nearestDate;
                 }
+                else
+                {
+                    dateTextBlock.Content = nearestDate; //weź nearestDate
+                }
+                    
             } 
             else // wybierz termin
             {
 
-            }
+            }           
         }
-
-        DateTime RoundUp(DateTime dt, TimeSpan d)
-        {
-            return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
-        }
-
-        bool isWorkDay(DateTime dt)
-        {
-            if (dt.DayOfWeek == DayOfWeek.Sunday || dt.DayOfWeek == DayOfWeek.Saturday)
-                return false;
-            else
-                return true;
-        }
-
-        bool isWorkHour(DateTime dt)
-        {
-            if (dt.Hour >= startHour && dt.Hour < endHour)
-                return true;
-            else
-                return false;
-        }
-
-        DateTime changeDateToNextWorkDay(DateTime dt) //  DateTime + TimeSpan  <- moze byc blad
-        {
-            TimeSpan ts = new TimeSpan(startHour, 0, 0);
-            if (isWorkDay(dt))
-            {
-                if (dt.DayOfWeek == DayOfWeek.Friday)
-                {
-                    return dt.AddDays(3) + ts;
-                }
-                else
-                {
-                    return dt.AddDays(1) + ts;
-                }
-            }
-            else
-            {
-                if (dt.DayOfWeek == DayOfWeek.Saturday)
-                {
-                    return dt.AddDays(2) + ts;
-                }
-                else
-                {
-                    return dt.AddDays(1) + ts;
-                }
-            }
-        }
-
-        DateTime getFinishDate(DateTime dt, int estimatedTime)
-        {
-            for (int i = 0; i < estimatedTime*4; i++)
-            {
-                if (isWorkHour(dt))
-                    dt = dt.AddMinutes(15);
-                else
-                    dt = changeDateToNextWorkDay(dt);
-            }
-            return dt;
-        }
-
     }
 }
