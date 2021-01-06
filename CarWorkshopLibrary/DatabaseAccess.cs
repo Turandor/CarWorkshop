@@ -165,5 +165,24 @@ namespace CarWorkshopLibrary
                     " values (@idCar, @idWorkplace, @idEmployee, @date, @appointmentType, @cost, @estimatedTime, @neededParts)", appointment);
             }
         }
+
+
+        /********************************** Workplace ***********************/
+        public static List<WorkplaceModel> loadWorkplace()
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                var output = cnn.Query<WorkplaceModel>("select * from Workplace", new DynamicParameters());
+                return output.ToList();
+            }
+        }
+
+        public static void saveWorkplace(WorkplaceModel workplace)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                cnn.Execute("insert into Appointment (idWorkplace, workplaceName)" + " values (@idWorkplace, @workplaceName)", workplace);
+            }
+        }
     }
 }
