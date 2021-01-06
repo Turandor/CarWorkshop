@@ -11,5 +11,6 @@ namespace CarWorkshopLibrary
         public int idService { get; set; }
         public string serviceName { get; set; }
         public double price { get; set; }
+        public string serviceCategory  { get; set; }
     }
 }

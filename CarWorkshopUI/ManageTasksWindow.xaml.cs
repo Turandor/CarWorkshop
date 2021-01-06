@@ -27,7 +27,7 @@ namespace CarWorkshopUI
         List<WarehouseModel> warehouse = new List<WarehouseModel>();
         List<OrdersModel> orders = new List<OrdersModel>();
         List<EmployeeModel> employees = new List<EmployeeModel>();
-
+        List<WorkplaceModel> workplaces = new List<WorkplaceModel>();
         public ManageTasksWindow()
         {
             InitializeComponent();
@@ -38,6 +38,7 @@ namespace CarWorkshopUI
             warehouse = DatabaseAccess.loadWarehouse();
             orders = DatabaseAccess.loadOrders();
             employees = DatabaseAccess.loadEmployees();
+            workplaces = DatabaseAccess.loadWorkplace();
 
             AppointmentModel cos = new AppointmentModel();
             cos.date = DateTime.UtcNow;
@@ -114,7 +115,8 @@ namespace CarWorkshopUI
             WarehouseModel part;
             OrdersModel pendingOrder;
             DateTime nearestDate = AppointmentModel.RoundUp(DateTime.UtcNow, TimeSpan.FromMinutes(15));
-            
+            EmployeeModel choosenEmployee;
+            WorkplaceModel choosenWorkplace;
 
             string[] neededParts = neededPartsText.Text.Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
@@ -155,12 +157,30 @@ namespace CarWorkshopUI
                     foreach (var item in collidingAppointments) // wolny pracownik i stanowisko
                     {
                         availableEmployees.Remove(availableEmployees.Find(x => x.idEmployee == item.idEmployee));
-                        availableWorkplaces.Remove(availableWorkplaces.Find(x => x.idWorkplaces == item.idWorkplace));
+                        availableWorkplaces.Remove(availableWorkplaces.Find(x => x.idWorkplace == item.idWorkplace));
                     }
                     ServiceModel service = services.Find(x => x.serviceName == appointmentTypeComboBox.Text);
-                    
-                    availableEmployees.Find(x => x.specialization == )
-                    dateTextBlock.Content = nearestDate;
+                    if(service.serviceName == "ogólny")
+                    {
+                        choosenEmployee = availableEmployees[0];
+                        choosenWorkplace = availableWorkplaces.Find(x => x.workplaceName == service.serviceName);
+                    }
+                    else
+                    {
+                        choosenEmployee = availableEmployees.Find(x => x.specialization == service.serviceName);
+                        choosenWorkplace = availableWorkplaces.Find(x => x.workplaceName == service.serviceName);
+                    }
+                    if (choosenWorkplace == default || choosenEmployee == default)  //sprawidzić działanie default
+                    {
+                        //następna iteracja +15min
+                        //return
+                    }
+                    else
+                    {
+                        dateTextBlock.Content = nearestDate;
+                        employeeTextBlock.Content = choosenEmployee.firstName + choosenEmployee.lastName;
+                        workplaceTextBlock.Content = choosenWorkplace.workplaceName + "stanowisko: " + choosenWorkplace.idWorkplace;
+                    }
                 }
                 else
                 {
