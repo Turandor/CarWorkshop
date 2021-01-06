@@ -203,5 +203,17 @@ namespace CarWorkshopUI
             }
         }
 
+        DateTime getFinishDate(DateTime dt, int estimatedTime)
+        {
+            for (int i = 0; i < estimatedTime*4; i++)
+            {
+                if (isWorkHour(dt))
+                    dt = dt.AddMinutes(15);
+                else
+                    dt = changeDateToNextWorkDay(dt);
+            }
+            return dt;
+        }
+
     }
 }
