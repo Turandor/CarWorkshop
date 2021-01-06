@@ -39,6 +39,11 @@ namespace CarWorkshopUI
             warehouse = DatabaseAccess.loadWarehouse();
             orders = DatabaseAccess.loadOrders();
 
+            AppointmentModel cos = new AppointmentModel();
+            cos.date = DateTime.UtcNow;
+            cos.estimatedTime = 4;
+            MessageBox.Show(cos.date + "\n" + cos.GetFinishDate());
+
             foreach (var item in services)
             {
                 appointmentTypeComboBox.Items.Add(item.serviceName);
@@ -102,9 +107,10 @@ namespace CarWorkshopUI
             DatabaseAccess.saveAppointment(appointment);
             DatabaseAccess.loadAppointments();
         }
-
+        
         private void calculateButton_Click(object sender, RoutedEventArgs e)
         {
+            /*
             string[] separator = new string[]{ ", " };
             WarehouseModel part;
             OrdersModel pendingOrder;
@@ -141,8 +147,8 @@ namespace CarWorkshopUI
 
             if(true) // checkbox czy chcesz najblizszy termin
             {
-                var appointmentsTmp = appointments.FindAll(x => x.date.Date == nearestDate.Date && x.date.Date == nearestDate.AddDays(-1).Date);
-                appointmentsTmp = appointmentsTmp.FindAll(x => x.date.TimeOfDay < nearestDate.TimeOfDay && x.date.AddHours(x.estimatedTime).TimeOfDay > nearestDate.TimeOfDay);
+
+                var appointmentsTmp = appointments.FindAll(x => x.date < nearestDate &&  > nearestDate);
                 dateTextBlock.Content = nearestDate;
                 foreach (var item in appointments) // wolny pracownik i stanowisko
                 {
@@ -153,6 +159,7 @@ namespace CarWorkshopUI
             {
 
             }
+                    */
         }
 
         DateTime RoundUp(DateTime dt, TimeSpan d)
@@ -179,6 +186,32 @@ namespace CarWorkshopUI
         DateTime changeDateToNextWorkDay(DateTime dt) //  DateTime + TimeSpan  <- moze byc blad
         {
             TimeSpan ts = new TimeSpan(startHour, 0, 0);
+            if (isWorkDay(dt))
+            {
+                if (dt.DayOfWeek == DayOfWeek.Friday)
+                {
+                    return dt.AddDays(3) + ts;
+                }
+                else
+                {
+                    return dt.AddDays(1) + ts;
+                }
+            }
+            else
+            {
+                if (dt.DayOfWeek == DayOfWeek.Saturday)
+                {
+                    return dt.AddDays(2) + ts;
+                }
+                else
+                {
+                    return dt.AddDays(1) + ts;
+                }
+            }
+        }
+        DateTime changeDateToNextWorkDay(DateTime dt, double timeLeft) //  DateTime + TimeSpan  <- moze byc blad
+        {
+            TimeSpan ts = new TimeSpan(startHour, 0, 0) + new TimeSpan((int)timeLeft, 0, 0);
             if (isWorkDay(dt))
             {
                 if (dt.DayOfWeek == DayOfWeek.Friday)
