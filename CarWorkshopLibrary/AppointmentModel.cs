@@ -23,33 +23,73 @@ namespace CarWorkshopLibrary
 
         public DateTime GetFinishDate()
         {
+            //2 while zrobić w 1
             TimeSpan timeLeft;
-            DateTime dateTmp = date.AddHours(estimatedTime);
             TimeSpan endTime = new TimeSpan(endHour, 0, 0);
-            if (dateTmp.TimeOfDay > endTime)
+            DateTime dateTmp = date;
+            int workDays = 0;
+            while(estimatedTime >= (endHour-startHour))
             {
-                timeLeft = dateTmp.TimeOfDay - endTime;
-                return changeDateToNextWorkDay(dateTmp, timeLeft);
+                workDays++;
+                estimatedTime -= (endHour-startHour);
             }
-            else return dateTmp;
+
+            //dateTmp = dateTmp.AddHours(estimatedTime);
+            //if (dateTmp.TimeOfDay.h > endTime )
+            if (dateTmp.Hour + estimatedTime >= endHour)
+            {
+                timeLeft = (endTime - dateTmp.TimeOfDay);
+                timeLeft = new TimeSpan((int)estimatedTime, 0, 0) - timeLeft;
+                dateTmp = changeDateToNextWorkDay(dateTmp, timeLeft);
+            }
+            else
+                dateTmp = dateTmp.AddHours(estimatedTime);
+
+            TimeSpan time = dateTmp.TimeOfDay;
+            while (workDays != 0)
+            {
+                dateTmp = changeDateToNextWorkDay(dateTmp);
+                workDays--;
+            }
+            return dateTmp + time - dateTmp.TimeOfDay;
         }
         public static DateTime GetFinishDate(DateTime date, double estimatedTime)
         {
+            //2 while zrobić w 1
             TimeSpan timeLeft;
-            DateTime dateTmp = date.AddHours(estimatedTime);
             TimeSpan endTime = new TimeSpan(endHour, 0, 0);
-            if (dateTmp.TimeOfDay > endTime)
+            DateTime dateTmp = date;
+            int workDays = 0;
+            while (estimatedTime >= (endHour - startHour))
             {
-                timeLeft = dateTmp.TimeOfDay - endTime;
-                return changeDateToNextWorkDay(dateTmp, timeLeft);
+                workDays++;
+                estimatedTime -= (endHour - startHour);
             }
-            else return dateTmp;
+
+            //dateTmp = dateTmp.AddHours(estimatedTime);
+            //if (dateTmp.TimeOfDay.h > endTime )
+            if (dateTmp.Hour + estimatedTime >= endHour)
+            {
+                timeLeft = (endTime - dateTmp.TimeOfDay);
+                timeLeft = new TimeSpan((int)estimatedTime, 0, 0) - timeLeft;
+                dateTmp = changeDateToNextWorkDay(dateTmp, timeLeft);
+            }
+            else
+                dateTmp = dateTmp.AddHours(estimatedTime);
+
+            TimeSpan time = dateTmp.TimeOfDay;
+            while (workDays != 0)
+            {
+                dateTmp = changeDateToNextWorkDay(dateTmp);
+                workDays--;
+            }
+            return dateTmp + time - dateTmp.TimeOfDay;
         }
         public static DateTime RoundUp(DateTime dt, TimeSpan d)
         {
             return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
         }
-        static bool isWorkDay(DateTime dt)
+        public static bool isWorkDay(DateTime dt)
         {
             if (dt.DayOfWeek == DayOfWeek.Sunday || dt.DayOfWeek == DayOfWeek.Saturday)
                 return false;
@@ -57,16 +97,17 @@ namespace CarWorkshopLibrary
                 return true;
         }
 
-        static bool isWorkHour(DateTime dt)
+        public static bool isWorkHour(DateTime dt)
         {
             if (dt.Hour >= startHour && dt.Hour < endHour)
                 return true;
             else
                 return false;
         }
-        static DateTime changeDateToNextWorkDay(DateTime dt) //  DateTime + TimeSpan  <- moze byc blad
+        public static DateTime changeDateToNextWorkDay(DateTime dt) //  DateTime + TimeSpan  <- moze byc blad
         {
             TimeSpan ts = new TimeSpan(startHour, 0, 0);
+            dt = new DateTime(dt.Year, dt.Month, dt.Day);
             if (isWorkDay(dt))
             {
                 if (dt.DayOfWeek == DayOfWeek.Friday)
@@ -90,7 +131,7 @@ namespace CarWorkshopLibrary
                 }
             }
         }
-        static DateTime changeDateToNextWorkDay(DateTime dt, TimeSpan timeLeft) //  DateTime + TimeSpan  <- moze byc blad
+        public static DateTime changeDateToNextWorkDay(DateTime dt, TimeSpan timeLeft) //  DateTime + TimeSpan  <- moze byc blad
         {
             TimeSpan ts = new TimeSpan(startHour, 0, 0) + timeLeft;
             dt = new DateTime(dt.Year, dt.Month, dt.Day);
