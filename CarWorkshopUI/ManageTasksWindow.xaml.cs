@@ -42,7 +42,7 @@ namespace CarWorkshopUI
 
             AppointmentModel cos = new AppointmentModel();
             cos.date = DateTime.UtcNow;
-            cos.estimatedTime = 4;
+            cos.estimatedTime = 101;
             MessageBox.Show(cos.date + "\n" + cos.GetFinishDate());
 
             foreach (var item in services)
@@ -117,9 +117,9 @@ namespace CarWorkshopUI
             DateTime nearestDate = AppointmentModel.RoundUp(DateTime.UtcNow, TimeSpan.FromMinutes(15));
             EmployeeModel choosenEmployee;
             WorkplaceModel choosenWorkplace;
-
+            ServiceModel service = services.Find(x => x.serviceName == appointmentTypeComboBox.Text);
             string[] neededParts = neededPartsText.Text.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-
+            List<WarehouseModel> confirmedNeededParts = new List<WarehouseModel>();
             foreach (var item in neededParts)
             {
                 part = warehouse.Find(x => x.partName == item); //by names 
@@ -139,9 +139,10 @@ namespace CarWorkshopUI
                     else
                     {
                         //TimeSpan orderDelay = pendingOrder.realizationDate - DateTime.UtcNow;
-                        DateTime orderDelay = pendingOrder.realizationDate;
+                        DateTime orderDelay = pendingOrder.realizationDate; // DODAĆ POTEM WAŻNE DO NEAREST DATE albo co..
                     }
                 }
+                confirmedNeededParts.Add(part);
             } //all parts ready
 
             if(true) // checkbox czy chcesz najblizszy termin
@@ -159,7 +160,7 @@ namespace CarWorkshopUI
                         availableEmployees.Remove(availableEmployees.Find(x => x.idEmployee == item.idEmployee));
                         availableWorkplaces.Remove(availableWorkplaces.Find(x => x.idWorkplace == item.idWorkplace));
                     }
-                    ServiceModel service = services.Find(x => x.serviceName == appointmentTypeComboBox.Text);
+
                     if(service.serviceName == "ogólny")
                     {
                         choosenEmployee = availableEmployees[0];
@@ -170,28 +171,42 @@ namespace CarWorkshopUI
                         choosenEmployee = availableEmployees.Find(x => x.specialization == service.serviceName);
                         choosenWorkplace = availableWorkplaces.Find(x => x.workplaceName == service.serviceName);
                     }
+
                     if (choosenWorkplace == default || choosenEmployee == default)  //sprawidzić działanie default
                     {
-                        //następna iteracja +15min
-                        //return
+                        nearestDate.AddMinutes(15);
+                        if (!AppointmentModel.isWorkHour(nearestDate))
+                            AppointmentModel.changeDateToNextWorkDay(nearestDate);
+                        //następna iteracja
                     }
                     else
                     {
                         dateTextBlock.Content = nearestDate;
-                        employeeTextBlock.Content = choosenEmployee.firstName + choosenEmployee.lastName;
-                        workplaceTextBlock.Content = choosenWorkplace.workplaceName + "stanowisko: " + choosenWorkplace.idWorkplace;
                     }
                 }
                 else
                 {
                     dateTextBlock.Content = nearestDate; //weź nearestDate
+                    choosenEmployee = employees.Find(x => x.specialization == service.serviceName);
+                    choosenWorkplace = workplaces.Find(x => x.workplaceName == service.serviceName);
                 }
-                    
+
+                employeeTextBlock.Content = choosenEmployee.firstName + choosenEmployee.lastName;
+                workplaceTextBlock.Content = choosenWorkplace.workplaceName + "stanowisko: " + choosenWorkplace.idWorkplace;
             } 
             else // wybierz termin
             {
 
-            }           
+            }
+
+            //calculate price
+            double price = 0;
+            foreach (var item in confirmedNeededParts)
+            {
+                price += item.price;
+            }
+            price += service.price * double.Parse(estimatedTimeText.Text);
+            priceTextBlock.Content = price;
         }
     }
 }
