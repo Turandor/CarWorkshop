@@ -38,11 +38,10 @@
         <Label Content="Cena:" HorizontalAlignment="Left" Height="32" Margin="398,290,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
         <Label Content="Pracownik:" HorizontalAlignment="Left" Height="32" Margin="398,318,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
         <Label Content="Stanowisko:" HorizontalAlignment="Left" Height="32" Margin="398,348,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
-        <Label x:Name="dateTextBlock" Content="termin" HorizontalAlignment="Left" Height="32" Margin="490,262,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
-        <Label Content="cena" HorizontalAlignment="Left" Height="32" Margin="490,290,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
-        <Label x:Name="priceTextBlock" Content="cena" HorizontalAlignment="Left" Height="32" Margin="490,290,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
-        <Label x:Name="employeeTextBlock" Content="pracownik" HorizontalAlignment="Left" Height="32" Margin="490,318,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
-        <Label x:Name="workplaceTextBlock" Content="stanowisko" HorizontalAlignment="Left" Height="32" Margin="490,347,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
+        <Label x:Name="dateTextBlock" Content="termin" HorizontalAlignment="Left" Height="32" Margin="490,262,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
+        <Label x:Name="priceTextBlock" Content="cena" HorizontalAlignment="Left" Height="32" Margin="490,290,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
+        <Label x:Name="employeeTextBlock" Content="pracownik" HorizontalAlignment="Left" Height="32" Margin="490,318,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
+        <Label x:Name="workplaceTextBlock" Content="stanowisko" HorizontalAlignment="Left" Height="32" Margin="490,347,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
 
 
     </Grid>
