@@ -36,7 +36,7 @@ namespace CarWorkshopLibrary
 
             //dateTmp = dateTmp.AddHours(estimatedTime);
             //if (dateTmp.TimeOfDay.h > endTime )
-            if (dateTmp.Hour + estimatedTime >= endHour)
+            if (dateTmp.Hour + estimatedTime > endHour || (dateTmp.Hour + estimatedTime == endHour && dateTmp.Minute < 0))
             {
                 timeLeft = (endTime - dateTmp.TimeOfDay);
                 timeLeft = new TimeSpan((int)estimatedTime, 0, 0) - timeLeft;
@@ -68,7 +68,7 @@ namespace CarWorkshopLibrary
 
             //dateTmp = dateTmp.AddHours(estimatedTime);
             //if (dateTmp.TimeOfDay.h > endTime )
-            if (dateTmp.Hour + estimatedTime >= endHour)
+            if (dateTmp.Hour + estimatedTime > endHour || (dateTmp.Hour + estimatedTime == endHour && dateTmp.Minute < 0))
             {
                 timeLeft = (endTime - dateTmp.TimeOfDay);
                 timeLeft = new TimeSpan((int)estimatedTime, 0, 0) - timeLeft;

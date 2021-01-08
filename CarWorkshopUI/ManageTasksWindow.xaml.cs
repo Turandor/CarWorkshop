@@ -31,7 +31,7 @@ namespace CarWorkshopUI
 
         EmployeeModel chosenEmployee = new EmployeeModel();
         WorkplaceModel chosenWorkplace = new WorkplaceModel();
-        DateTime chosenDataTime = new DateTime();
+        DateTime chosenDateTime = new DateTime();
 
         public ManageTasksWindow()
         {
@@ -105,7 +105,7 @@ namespace CarWorkshopUI
             appointment.idCar = car.idCar;
             appointment.idWorkplace = chosenWorkplace.idWorkplace;    
             appointment.idEmployee = chosenEmployee.idEmployee;
-            appointment.date = chosenDataTime;
+            appointment.date = chosenDateTime;
             appointment.appointmentType = appointmentTypeComboBox.SelectedItem.ToString();
             appointment.cost = double.Parse(priceTextBlock.Content.ToString());
             appointment.estimatedTime = double.Parse(estimatedTimeText.Text);
@@ -122,6 +122,25 @@ namespace CarWorkshopUI
             orders = DatabaseAccess.loadOrders();
             employees = DatabaseAccess.loadEmployees();
             workplaces = DatabaseAccess.loadWorkplace();
+
+            //firstNameText.Text = null;
+            //lastNameText.Text = null;
+            //phoneText.Text = null;
+            //adressText.Text = null;
+            //brandText.Text = null;
+            //modelText.Text = null;
+            //registrationNumberText.Text = null;
+            //appointmentTypeComboBox.SelectedItem = null;
+            //estimatedTimeText.Text = null;
+            //neededPartsText.Text = null;
+
+            //chosenDatePicker.SelectedDate = null;
+            //nearestDateCheckBox.IsChecked = false;
+            //dateTextBlock.Content = null;
+            //priceTextBlock.Content = null;
+            //employeeTextBlock.Content = null;
+            //workplaceTextBlock.Content = null;
+
         }
         
         private void calculateButton_Click(object sender, RoutedEventArgs e)
@@ -143,6 +162,12 @@ namespace CarWorkshopUI
             //reset employee and workplace
             chosenEmployee = new EmployeeModel();
             chosenWorkplace = new WorkplaceModel();
+
+            //make appointment after working hours
+            if(!AppointmentModel.isWorkDay(nearestDate) || !AppointmentModel.isWorkHour(nearestDate))
+            {
+                nearestDate = AppointmentModel.changeDateToNextWorkDay(nearestDate);
+            }
 
             foreach (var item in neededParts)
             {
@@ -195,9 +220,9 @@ namespace CarWorkshopUI
 
             while(!nearestDateFound) //found neares available date
             {
-                collidingAppointments = appointments.FindAll(x => (x.date < nearestDate && x.GetFinishDate() > nearestDate) ||
-                                                                        (x.date > nearestDate && x.GetFinishDate() < AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text))) ||
-                                                                        (x.date > nearestDate && x.date < AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text)) && x.GetFinishDate() > AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text))));
+                collidingAppointments = appointments.FindAll(x => (x.date <= nearestDate && x.GetFinishDate() > nearestDate) ||
+                                                                  (x.date >= nearestDate && x.GetFinishDate() < AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text))) ||
+                                                                  (x.date >= nearestDate && x.date <= AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text)) && x.GetFinishDate() > AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text))));
                 if (collidingAppointments.Count != 0)
                 {
                     availableEmployees = new List<EmployeeModel>(employees);
@@ -221,7 +246,7 @@ namespace CarWorkshopUI
 
                     if (chosenWorkplace == default || chosenEmployee == default)  //sprawidzić działanie default
                     {
-                        nearestDate.AddMinutes(15);
+                        nearestDate = nearestDate.AddMinutes(15);
                         if (!AppointmentModel.isWorkHour(nearestDate))
                         {
                             if (!nearestDateCheckBox.IsChecked.Value)
@@ -236,13 +261,13 @@ namespace CarWorkshopUI
                     }
                     else
                     {
-                        dateTextBlock.Content = nearestDate;
+                        dateTextBlock.Content = nearestDate + " - " + AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text));
                         nearestDateFound = true;
                     }
                 }
                 else
                 {
-                    dateTextBlock.Content = nearestDate + " - " + AppointmentModel.GetFinishDate(nearestDate,double.Parse(estimatedTimeText.Text)); //weź nearestDate
+                    dateTextBlock.Content = nearestDate + " - " + AppointmentModel.GetFinishDate(nearestDate,double.Parse(estimatedTimeText.Text));
                     chosenEmployee = employees.Find(x => x.specialization == service.serviceCategory);
                     chosenWorkplace = workplaces.Find(x => x.workplaceName == service.serviceCategory);
                     nearestDateFound = true;
@@ -252,7 +277,7 @@ namespace CarWorkshopUI
             employeeTextBlock.Content = chosenEmployee.firstName + " " + chosenEmployee.lastName;
             workplaceTextBlock.Content = chosenWorkplace.workplaceName + " stanowisko: " + chosenWorkplace.idWorkplace;
             //save chosen date
-            chosenDataTime = nearestDate;
+            chosenDateTime = nearestDate;
 
             //calculate price
             double price = 0;
