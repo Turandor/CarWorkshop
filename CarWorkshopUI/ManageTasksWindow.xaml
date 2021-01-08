@@ -42,7 +42,7 @@
         <Label x:Name="priceTextBlock" Content="cena" HorizontalAlignment="Left" Height="32" Margin="490,281,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
         <Label x:Name="employeeTextBlock" Content="pracownik" HorizontalAlignment="Left" Height="32" Margin="490,310,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
         <Label x:Name="workplaceTextBlock" Content="stanowisko" HorizontalAlignment="Left" Height="32" Margin="490,343,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
-        <CheckBox x:Name="nearestDateCheckBox" VerticalContentAlignment="Center" Content="Najbliższy możliwy?" HorizontalAlignment="Left" Margin="470,173,0,0" VerticalAlignment="Top" Width="153" Checked="CheckBox_Checked" FontSize="15" Height="23"/>
+        <CheckBox x:Name="nearestDateCheckBox" VerticalContentAlignment="Center" Content="Najbliższy możliwy?" HorizontalAlignment="Left" Margin="470,173,0,0" VerticalAlignment="Top" Width="153" FontSize="15" Height="23"/>
         <DatePicker x:Name="chosenDatePicker" HorizontalAlignment="Left" Margin="641,169,0,0" VerticalAlignment="Top" Width="127" FontSize="15"/>
         <Label Content="Termin:" HorizontalAlignment="Left" Margin="387,170,0,0" VerticalAlignment="Top" FontSize="15" Width="64"/>
 
