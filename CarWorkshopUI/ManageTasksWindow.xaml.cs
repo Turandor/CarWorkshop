@@ -261,12 +261,16 @@ namespace CarWorkshopUI
                     }
                     else
                     {
+                        if (nearestDate.Hour == 18)
+                            nearestDate = AppointmentModel.changeDateToNextWorkDay(nearestDate);
                         dateTextBlock.Content = nearestDate + " - " + AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text));
                         nearestDateFound = true;
                     }
                 }
                 else
                 {
+                    if (nearestDate.Hour == 18)
+                        nearestDate = AppointmentModel.changeDateToNextWorkDay(nearestDate);
                     dateTextBlock.Content = nearestDate + " - " + AppointmentModel.GetFinishDate(nearestDate,double.Parse(estimatedTimeText.Text));
                     chosenEmployee = employees.Find(x => x.specialization == service.serviceCategory);
                     chosenWorkplace = workplaces.Find(x => x.workplaceName == service.serviceCategory);
