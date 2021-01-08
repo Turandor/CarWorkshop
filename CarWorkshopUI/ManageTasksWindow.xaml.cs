@@ -28,6 +28,11 @@ namespace CarWorkshopUI
         List<OrdersModel> orders = new List<OrdersModel>();
         List<EmployeeModel> employees = new List<EmployeeModel>();
         List<WorkplaceModel> workplaces = new List<WorkplaceModel>();
+
+        EmployeeModel chosenEmployee = new EmployeeModel();
+        WorkplaceModel chosenWorkplace = new WorkplaceModel();
+        DateTime chosenDataTime = new DateTime();
+
         public ManageTasksWindow()
         {
             InitializeComponent();
@@ -60,53 +65,63 @@ namespace CarWorkshopUI
 
         private void confirmButton_Click(object sender, RoutedEventArgs e)
         {
-            CustomerModel custormer = new CustomerModel();
+            CustomerModel customer = new CustomerModel();
             CarModel car = new CarModel();
             AppointmentModel appointment = new AppointmentModel();
-            
-            custormer = customers.Find(x => x.firstName == firstNameText.Text &&
+
+            customer = customers.Find(x => x.firstName == firstNameText.Text &&
                                                 x.lastName == lastNameText.Text &&
                                                 x.phoneNumber == phoneText.Text);
-            if (custormer == null)
+            if (customer == null)
             {
-                custormer.firstName = firstNameText.Text;
-                custormer.lastName = lastNameText.Text;
-                custormer.phoneNumber = phoneText.Text;
-                custormer.adress = adressText.Text;
+                customer = new CustomerModel();
+                customer.firstName = firstNameText.Text;
+                customer.lastName = lastNameText.Text;
+                customer.phoneNumber = phoneText.Text;
+                customer.adress = adressText.Text;
 
-                DatabaseAccess.saveCustomer(custormer);
+                DatabaseAccess.saveCustomer(customer);
                 customers = DatabaseAccess.loadCustomers();
-                custormer = customers.Find(x => x.firstName == custormer.firstName &&
-                                                    x.lastName == custormer.lastName &&
-                                                    x.phoneNumber == custormer.phoneNumber);
+                customer = customers.Find(x => x.firstName == customer.firstName &&
+                                                    x.lastName == customer.lastName &&
+                                                    x.phoneNumber == customer.phoneNumber);
             }
 
-            var carsList = DatabaseAccess.loadCars(); //loading cars 
-            car = carsList.Find(x => x.registrationNumber == car.registrationNumber);
+            car = cars.Find(x => x.registrationNumber == car.registrationNumber);
             if (car == null)
             {
-                car.idCustomer = custormer.idCustomer;
+                car = new CarModel();
+                car.idCustomer = customer.idCustomer;
                 car.brand = brandText.Text;
                 car.model = modelText.Text;
                 car.registrationNumber = registrationNumberText.Text;
 
                 DatabaseAccess.saveCar(car);
-                carsList = DatabaseAccess.loadCars();
-                car = carsList.Find(x => x.registrationNumber == car.registrationNumber);
+                cars = DatabaseAccess.loadCars();
+                car = cars.Find(x => x.registrationNumber == car.registrationNumber);
             }
 
             //make appointment
             appointment.idCar = car.idCar;
-            appointment.idWorkplace = int.Parse(workplaceTextBlock.Content.ToString());
-            appointment.idEmployee = int.Parse(employeeTextBlock.Content.ToString());
-            appointment.date = DateTime.Parse(dateTextBlock.Content.ToString());
+            appointment.idWorkplace = chosenWorkplace.idWorkplace;    
+            appointment.idEmployee = chosenEmployee.idEmployee;
+            appointment.date = chosenDataTime;
             appointment.appointmentType = appointmentTypeComboBox.SelectedItem.ToString();
-            appointment.cost = int.Parse(priceTextBlock.Content.ToString());
+            appointment.cost = double.Parse(priceTextBlock.Content.ToString());
             appointment.estimatedTime = double.Parse(estimatedTimeText.Text);
             appointment.neededParts = neededPartsText.Text;
 
             DatabaseAccess.saveAppointment(appointment);
             DatabaseAccess.loadAppointments();
+
+            services = DatabaseAccess.loadServices();
+            customers = DatabaseAccess.loadCustomers();
+            cars = DatabaseAccess.loadCars();
+            appointments = DatabaseAccess.loadAppointments();
+            warehouse = DatabaseAccess.loadWarehouse();
+            orders = DatabaseAccess.loadOrders();
+            employees = DatabaseAccess.loadEmployees();
+            workplaces = DatabaseAccess.loadWorkplace();
         }
         
         private void calculateButton_Click(object sender, RoutedEventArgs e)
@@ -116,8 +131,6 @@ namespace CarWorkshopUI
 
             WarehouseModel part;
             OrdersModel pendingOrder;
-            EmployeeModel choosenEmployee = new EmployeeModel();
-            WorkplaceModel choosenWorkplace = new WorkplaceModel();
             ServiceModel service = services.Find(x => x.serviceName == appointmentTypeComboBox.Text);
 
             DateTime nearestDate = AppointmentModel.RoundUp(DateTime.UtcNow, TimeSpan.FromMinutes(15));
@@ -126,6 +139,10 @@ namespace CarWorkshopUI
             List<AppointmentModel> collidingAppointments = new List<AppointmentModel>();
             List<EmployeeModel> availableEmployees = new List<EmployeeModel>();
             List<WorkplaceModel> availableWorkplaces = new List<WorkplaceModel>();
+
+            //reset employee and workplace
+            chosenEmployee = new EmployeeModel();
+            chosenWorkplace = new WorkplaceModel();
 
             foreach (var item in neededParts)
             {
@@ -152,63 +169,90 @@ namespace CarWorkshopUI
                 confirmedNeededParts.Add(part);
             } //all parts ready
 
-            if(true) // checkbox czy chcesz najblizszy termin
+            if(!nearestDateCheckBox.IsChecked.Value)
             {
-                while(!nearestDateFound) //found neares available date
+                if (AppointmentModel.isWorkDay(chosenDatePicker.SelectedDate.Value))
                 {
-                    collidingAppointments = appointments.FindAll(x => (x.date < nearestDate && x.GetFinishDate() > nearestDate) ||
-                                                                          (x.date > nearestDate && x.GetFinishDate() < AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text))) ||
-                                                                          (x.date > nearestDate && x.date < AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text)) && x.GetFinishDate() > AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text))));
-                    if (collidingAppointments.Count != 0)
+                    if (nearestDate.Date < chosenDatePicker.SelectedDate)
                     {
-                        availableEmployees = new List<EmployeeModel>(employees);
-                        availableWorkplaces = new List<WorkplaceModel>(workplaces);
-                        foreach (var item in collidingAppointments) // wolny pracownik i stanowisko
-                        {
-                            availableEmployees.Remove(availableEmployees.Find(x => x.idEmployee == item.idEmployee));
-                            availableWorkplaces.Remove(availableWorkplaces.Find(x => x.idWorkplace == item.idWorkplace));
-                        }
+                        nearestDate = chosenDatePicker.SelectedDate.Value;
+                        nearestDate = new DateTime(nearestDate.Year, nearestDate.Month, nearestDate.Day, AppointmentModel.startHour, 0, 0);
+                    }
+                    else if (nearestDate.Date > chosenDatePicker.SelectedDate)
+                    {
+                        MessageBox.Show("Brak części lub zły termin");
+                        return;
+                    }
+                    // if equal take nearestDate
+                }
+                else
+                {
+                    MessageBox.Show("Warsztat nieczynny w weekendy");
+                    return;
+                }
 
-                        if (service.serviceName == "ogólny")
-                        {
-                            choosenEmployee = availableEmployees[0];
-                            choosenWorkplace = availableWorkplaces.Find(x => x.workplaceName == service.serviceCategory);
-                        }
-                        else
-                        {
-                            choosenEmployee = availableEmployees.Find(x => x.specialization == service.serviceCategory);
-                            choosenWorkplace = availableWorkplaces.Find(x => x.workplaceName == service.serviceCategory);
-                        }
+            }
 
-                        if (choosenWorkplace == default || choosenEmployee == default)  //sprawidzić działanie default
-                        {
-                            nearestDate.AddMinutes(15);
-                            if (!AppointmentModel.isWorkHour(nearestDate))
-                                AppointmentModel.changeDateToNextWorkDay(nearestDate);
-                            //następna iteracja
-                        }
-                        else
-                        {
-                            dateTextBlock.Content = nearestDate;
-                            nearestDateFound = true;
-                        }
+            while(!nearestDateFound) //found neares available date
+            {
+                collidingAppointments = appointments.FindAll(x => (x.date < nearestDate && x.GetFinishDate() > nearestDate) ||
+                                                                        (x.date > nearestDate && x.GetFinishDate() < AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text))) ||
+                                                                        (x.date > nearestDate && x.date < AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text)) && x.GetFinishDate() > AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text))));
+                if (collidingAppointments.Count != 0)
+                {
+                    availableEmployees = new List<EmployeeModel>(employees);
+                    availableWorkplaces = new List<WorkplaceModel>(workplaces);
+                    foreach (var item in collidingAppointments) // wolny pracownik i stanowisko
+                    {
+                        availableEmployees.Remove(availableEmployees.Find(x => x.idEmployee == item.idEmployee));
+                        availableWorkplaces.Remove(availableWorkplaces.Find(x => x.idWorkplace == item.idWorkplace));
+                    }
+
+                    if (service.serviceName == "ogólny")
+                    {
+                        chosenEmployee = availableEmployees[0];
+                        chosenWorkplace = availableWorkplaces.Find(x => x.workplaceName == service.serviceCategory);
                     }
                     else
                     {
-                        dateTextBlock.Content = nearestDate + " - " + AppointmentModel.GetFinishDate(nearestDate,double.Parse(estimatedTimeText.Text)); //weź nearestDate
-                        choosenEmployee = employees.Find(x => x.specialization == service.serviceCategory);
-                        choosenWorkplace = workplaces.Find(x => x.workplaceName == service.serviceCategory);
+                        chosenEmployee = availableEmployees.Find(x => x.specialization == service.serviceCategory);
+                        chosenWorkplace = availableWorkplaces.Find(x => x.workplaceName == service.serviceCategory);
+                    }
+
+                    if (chosenWorkplace == default || chosenEmployee == default)  //sprawidzić działanie default
+                    {
+                        nearestDate.AddMinutes(15);
+                        if (!AppointmentModel.isWorkHour(nearestDate))
+                        {
+                            if (!nearestDateCheckBox.IsChecked.Value)
+                            {
+                                MessageBox.Show("Brak wolnych godzin w wybranym dniu");
+                                return;
+                            }
+                            else 
+                                AppointmentModel.changeDateToNextWorkDay(nearestDate);
+                        }
+                        //następna iteracja
+                    }
+                    else
+                    {
+                        dateTextBlock.Content = nearestDate;
                         nearestDateFound = true;
                     }
                 }
-                //sprawdzić czy któraś ścieżka nie przypisuje
-                employeeTextBlock.Content = choosenEmployee.firstName + " " + choosenEmployee.lastName;
-                workplaceTextBlock.Content = choosenWorkplace.workplaceName + " stanowisko: " + choosenWorkplace.idWorkplace;
-            } 
-            else // wybierz termin
-            {
-
+                else
+                {
+                    dateTextBlock.Content = nearestDate + " - " + AppointmentModel.GetFinishDate(nearestDate,double.Parse(estimatedTimeText.Text)); //weź nearestDate
+                    chosenEmployee = employees.Find(x => x.specialization == service.serviceCategory);
+                    chosenWorkplace = workplaces.Find(x => x.workplaceName == service.serviceCategory);
+                    nearestDateFound = true;
+                }
             }
+            //sprawdzić czy któraś ścieżka nie przypisuje
+            employeeTextBlock.Content = chosenEmployee.firstName + " " + chosenEmployee.lastName;
+            workplaceTextBlock.Content = chosenWorkplace.workplaceName + " stanowisko: " + chosenWorkplace.idWorkplace;
+            //save chosen date
+            chosenDataTime = nearestDate;
 
             //calculate price
             double price = 0;
@@ -217,7 +261,19 @@ namespace CarWorkshopUI
                 price += item.price;
             }
             price += service.price * double.Parse(estimatedTimeText.Text);
-            priceTextBlock.Content = price + " zł";
+            priceTextBlock.Content = price;
+
+        }
+
+        private void nearestDateCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            chosenDatePicker.Visibility = Visibility.Hidden;
+            chosenDatePicker.SelectedDate = null;
+        }
+
+        private void nearestDateCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            chosenDatePicker.Visibility = Visibility.Visible;
         }
     }
 }
