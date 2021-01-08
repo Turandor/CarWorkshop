@@ -8,40 +8,43 @@
         Title="ManageTasksWindow" Height="450" Width="800">
     <Grid>
         <Button x:Name="goBackButton" Content="Wróć" HorizontalAlignment="Left" Height="26" Margin="42,375,0,0" VerticalAlignment="Top" Width="58" FontSize="18" Click="goBackButton_Click"/>
-        <Label Content="Umów wizytę" HorizontalAlignment="Left" Height="37" Margin="31,37,0,0" VerticalAlignment="Top" Width="189" FontSize="20" FontWeight="Bold"/>
-        <Button x:Name="calculateButton" Content="Wybierz najbliższy termin i oblicz cenę" HorizontalAlignment="Left" Margin="438,195,0,0" VerticalAlignment="Top" Width="280" Height="38" FontSize="16" RenderTransformOrigin="3.305,2.576" Click="calculateButton_Click"/>
-        <Button x:Name="confirmButton" Content="Potwierdź wizytę" HorizontalAlignment="Left" Margin="605,368,0,0" VerticalAlignment="Top" Width="163" Height="41" FontSize="18" RenderTransformOrigin="3.305,2.576" Click="confirmButton_Click"/>
-        <Label Content="Imię klienta" HorizontalAlignment="Left" Height="32" Margin="34,104,0,0" VerticalAlignment="Top" Width="122" FontSize="15"/>
-        <TextBox x:Name="firstNameText" HorizontalAlignment="Left" Height="23" Margin="156,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
-        <Label Content="Nazwisko klienta" HorizontalAlignment="Left" Height="32" Margin="34,130,0,0" VerticalAlignment="Top" Width="122" FontSize="15" RenderTransformOrigin="0.333,-0.469"/>
-        <TextBox x:Name="lastNameText" HorizontalAlignment="Left" Height="23" Margin="156,135,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
-        <Label Content="Numer telefonu" HorizontalAlignment="Left" Height="32" Margin="34,158,0,0" VerticalAlignment="Top" Width="122" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
-        <TextBox x:Name="phoneText" HorizontalAlignment="Left" Height="23" Margin="156,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
-        <Label Content="Adres" HorizontalAlignment="Left" Height="32" Margin="34,186,0,0" VerticalAlignment="Top" Width="122" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
-        <TextBox x:Name="adressText" HorizontalAlignment="Left" Height="23" Margin="156,191,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
-        <Label Content="Marka pojazdu" HorizontalAlignment="Left" Height="32" Margin="34,262,0,0" VerticalAlignment="Top" Width="122" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
-        <Label Content="Model" HorizontalAlignment="Left" Height="32" Margin="34,290,0,0" VerticalAlignment="Top" Width="122" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
-        <Label Content="Numer rejestracyjny" HorizontalAlignment="Left" Height="32" Margin="34,318,0,0" VerticalAlignment="Top" Width="146" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
-        <TextBox x:Name="brandText" HorizontalAlignment="Left" Height="23" Margin="180,267,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199"/>
-        <TextBox x:Name="modelText" HorizontalAlignment="Left" Height="23" Margin="180,295,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199"/>
-        <TextBox x:Name="registrationNumberText" HorizontalAlignment="Left" Height="23" Margin="180,323,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199"/>
-        <Label Content="Dane klienta" HorizontalAlignment="Left" Height="32" Margin="34,75,0,0" VerticalAlignment="Top" Width="122" FontSize="15" FontWeight="Bold"/>
-        <Label Content="Dane pojazdu" HorizontalAlignment="Left" Height="32" Margin="34,232,0,0" VerticalAlignment="Top" Width="122" FontSize="15" FontWeight="Bold"/>
-        <Label Content="Szczegóły wizyty" HorizontalAlignment="Left" Height="32" Margin="398,75,0,0" VerticalAlignment="Top" Width="134" FontSize="15" FontWeight="Bold"/>
-        <Label Content="Przybliżony czas" HorizontalAlignment="Left" Height="32" Margin="398,130,0,0" VerticalAlignment="Top" Width="129" FontSize="15"/>
-        <Label Content="Rodzaj wizyty" HorizontalAlignment="Left" Height="32" Margin="398,104,0,0" VerticalAlignment="Top" Width="129" FontSize="15"/>
-        <Label Content="Wymagane części" HorizontalAlignment="Left" Height="32" Margin="398,158,0,0" VerticalAlignment="Top" Width="129" FontSize="15"/>
-        <TextBox x:Name="estimatedTimeText" HorizontalAlignment="Left" Height="23" Margin="532,135,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
-        <ComboBox x:Name="appointmentTypeComboBox" HorizontalAlignment="Left" Margin="532,108,0,0" VerticalAlignment="Top" Width="209"/>
-        <TextBox x:Name="neededPartsText" HorizontalAlignment="Left" Height="23" Margin="532,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
-        <Label Content="Termin:" HorizontalAlignment="Left" Height="32" Margin="398,262,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
-        <Label Content="Cena:" HorizontalAlignment="Left" Height="32" Margin="398,290,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
-        <Label Content="Pracownik:" HorizontalAlignment="Left" Height="32" Margin="398,318,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
-        <Label Content="Stanowisko:" HorizontalAlignment="Left" Height="32" Margin="398,348,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
-        <Label x:Name="dateTextBlock" Content="termin" HorizontalAlignment="Left" Height="32" Margin="490,262,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
-        <Label x:Name="priceTextBlock" Content="cena" HorizontalAlignment="Left" Height="32" Margin="490,290,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
-        <Label x:Name="employeeTextBlock" Content="pracownik" HorizontalAlignment="Left" Height="32" Margin="490,318,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
-        <Label x:Name="workplaceTextBlock" Content="stanowisko" HorizontalAlignment="Left" Height="32" Margin="490,347,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
+        <Label Content="Umów wizytę" HorizontalAlignment="Left" Height="37" Margin="10,10,0,0" VerticalAlignment="Top" Width="189" FontSize="20" FontWeight="Bold"/>
+        <Button x:Name="calculateButton" Content="Wybierz termin i oblicz cenę" HorizontalAlignment="Left" Margin="387,200,0,0" VerticalAlignment="Top" Width="381" Height="38" FontSize="16" RenderTransformOrigin="3.305,2.576" Click="calculateButton_Click"/>
+        <Button x:Name="confirmButton" Content="Potwierdź wizytę" HorizontalAlignment="Left" Margin="387,375,0,0" VerticalAlignment="Top" Width="381" Height="34" FontSize="18" RenderTransformOrigin="3.305,2.576" Click="confirmButton_Click"/>
+        <Label Content="Imię klienta:" HorizontalAlignment="Left" Height="32" Margin="22,79,0,0" VerticalAlignment="Top" Width="122" FontSize="15"/>
+        <TextBox x:Name="firstNameText" HorizontalAlignment="Left" Height="23" Margin="144,84,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
+        <Label Content="Nazwisko klienta:" HorizontalAlignment="Left" Height="32" Margin="22,108,0,0" VerticalAlignment="Top" Width="122" FontSize="15" RenderTransformOrigin="0.333,-0.469"/>
+        <TextBox x:Name="lastNameText" HorizontalAlignment="Left" Height="23" Margin="144,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
+        <Label Content="Numer telefonu:" HorizontalAlignment="Left" Height="32" Margin="22,135,0,0" VerticalAlignment="Top" Width="122" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
+        <TextBox x:Name="phoneText" HorizontalAlignment="Left" Height="23" Margin="144,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
+        <Label Content="Adres:" HorizontalAlignment="Left" Height="32" Margin="22,163,0,0" VerticalAlignment="Top" Width="122" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
+        <TextBox x:Name="adressText" HorizontalAlignment="Left" Height="23" Margin="144,168,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
+        <Label Content="Marka pojazdu:" HorizontalAlignment="Left" Height="32" Margin="22,232,0,0" VerticalAlignment="Top" Width="122" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
+        <Label Content="Model:" HorizontalAlignment="Left" Height="32" Margin="22,262,0,0" VerticalAlignment="Top" Width="122" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
+        <Label Content="Numer rejestracyjny:" HorizontalAlignment="Left" Height="32" Margin="22,290,0,0" VerticalAlignment="Top" Width="146" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
+        <TextBox x:Name="brandText" HorizontalAlignment="Left" Height="23" Margin="180,232,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199"/>
+        <TextBox x:Name="modelText" HorizontalAlignment="Left" Height="23" Margin="180,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199"/>
+        <TextBox x:Name="registrationNumberText" HorizontalAlignment="Left" Height="23" Margin="180,290,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199"/>
+        <Label Content="Dane klienta" HorizontalAlignment="Left" Height="32" Margin="22,47,0,0" VerticalAlignment="Top" Width="122" FontSize="15" FontWeight="Bold"/>
+        <Label Content="Dane pojazdu" HorizontalAlignment="Left" Height="32" Margin="22,200,0,0" VerticalAlignment="Top" Width="122" FontSize="15" FontWeight="Bold"/>
+        <Label Content="Szczegóły wizyty" HorizontalAlignment="Left" Height="32" Margin="387,47,0,0" VerticalAlignment="Top" Width="134" FontSize="15" FontWeight="Bold"/>
+        <Label Content="Przybliżony czas:" HorizontalAlignment="Left" Height="32" Margin="387,108,0,0" VerticalAlignment="Top" Width="140" FontSize="15"/>
+        <Label Content="Rodzaj wizyty:" HorizontalAlignment="Left" Height="32" Margin="387,79,0,0" VerticalAlignment="Top" Width="140" FontSize="15"/>
+        <Label Content="Wymagane części:" HorizontalAlignment="Left" Height="32" Margin="387,140,0,0" VerticalAlignment="Top" Width="140" FontSize="15"/>
+        <TextBox x:Name="estimatedTimeText" HorizontalAlignment="Left" Height="23" Margin="559,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
+        <ComboBox x:Name="appointmentTypeComboBox" HorizontalAlignment="Left" Margin="559,84,0,0" VerticalAlignment="Top" Width="209"/>
+        <TextBox x:Name="neededPartsText" HorizontalAlignment="Left" Height="23" Margin="559,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="209"/>
+        <Label Content="Termin:" HorizontalAlignment="Left" Height="32" Margin="387,251,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
+        <Label Content="Cena:" HorizontalAlignment="Left" Height="32" Margin="387,281,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
+        <Label Content="Pracownik:" HorizontalAlignment="Left" Height="32" Margin="387,311,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
+        <Label Content="Stanowisko:" HorizontalAlignment="Left" Height="32" Margin="387,343,0,0" VerticalAlignment="Top" Width="87" FontSize="15"/>
+        <Label x:Name="dateTextBlock" Content="termin" HorizontalAlignment="Left" Height="32" Margin="490,251,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
+        <Label x:Name="priceTextBlock" Content="cena" HorizontalAlignment="Left" Height="32" Margin="490,281,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
+        <Label x:Name="employeeTextBlock" Content="pracownik" HorizontalAlignment="Left" Height="32" Margin="490,310,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
+        <Label x:Name="workplaceTextBlock" Content="stanowisko" HorizontalAlignment="Left" Height="32" Margin="490,343,0,0" VerticalAlignment="Top" Width="278" FontSize="15"/>
+        <CheckBox x:Name="nearestDateCheckBox" VerticalContentAlignment="Center" Content="Najbliższy możliwy?" HorizontalAlignment="Left" Margin="470,173,0,0" VerticalAlignment="Top" Width="153" Checked="CheckBox_Checked" FontSize="15" Height="23"/>
+        <DatePicker x:Name="chosenDatePicker" HorizontalAlignment="Left" Margin="641,169,0,0" VerticalAlignment="Top" Width="127" FontSize="15"/>
+        <Label Content="Termin:" HorizontalAlignment="Left" Margin="387,170,0,0" VerticalAlignment="Top" FontSize="15" Width="64"/>
 
 
     </Grid>
