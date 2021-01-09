@@ -53,7 +53,7 @@ namespace CarWorkshopUI
 
             orders.idParts = int.Parse(idPartsText.Text);
             orders.amount = int.Parse(amountText.Text);  
-            orders.orderDate = DateTime.UtcNow;
+            orders.orderDate = RoundUp(DateTime.Now,TimeSpan.FromMinutes(1));
             orders.realizationDate = orders.orderDate.AddDays(int.Parse(deliveryTimeText.Text));
             orders.status = "w realizacji";
             
@@ -95,6 +95,10 @@ namespace CarWorkshopUI
 
             DatabaseAccess.updateOrders(order, part); //change status - finished
             loadOrdersList();
+        }
+        public static DateTime RoundUp(DateTime dt, TimeSpan d)
+        {
+            return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
         }
     }
 }
