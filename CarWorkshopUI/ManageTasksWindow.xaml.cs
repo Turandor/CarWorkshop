@@ -18,6 +18,14 @@ namespace CarWorkshopUI
     /// <summary>
     /// Logika interakcji dla klasy ManageTasksWindow.xaml
     /// </summary>
+
+    public enum PartStatus
+    {
+        Available,
+        Ordered,
+        Unavailable
+    }
+
     public partial class ManageTasksWindow : Window
     {
         List<CustomerModel> customers = new List<CustomerModel>();
@@ -33,6 +41,7 @@ namespace CarWorkshopUI
         WorkplaceModel chosenWorkplace = new WorkplaceModel();
         DateTime chosenDateTime = new DateTime();
 
+        List<PartStatus> partsStatus;
         public ManageTasksWindow()
         {
             InitializeComponent();
@@ -44,11 +53,6 @@ namespace CarWorkshopUI
             orders = DatabaseAccess.loadOrders();
             employees = DatabaseAccess.loadEmployees();
             workplaces = DatabaseAccess.loadWorkplace();
-
-            AppointmentModel cos = new AppointmentModel();
-            cos.date = DateTime.UtcNow;
-            cos.estimatedTime = 101;
-            MessageBox.Show(cos.date + "\n" + cos.GetFinishDate());
 
             foreach (var item in services)
             {
@@ -69,78 +73,90 @@ namespace CarWorkshopUI
             CarModel car = new CarModel();
             AppointmentModel appointment = new AppointmentModel();
 
-            customer = customers.Find(x => x.firstName == firstNameText.Text &&
-                                                x.lastName == lastNameText.Text &&
-                                                x.phoneNumber == phoneText.Text);
-            if (customer == null)
+            if (partsStatus.Count == 0)
             {
-                customer = new CustomerModel();
-                customer.firstName = firstNameText.Text;
-                customer.lastName = lastNameText.Text;
-                customer.phoneNumber = phoneText.Text;
-                customer.adress = adressText.Text;
-
-                DatabaseAccess.saveCustomer(customer);
-                customers = DatabaseAccess.loadCustomers();
-                customer = customers.Find(x => x.firstName == customer.firstName &&
-                                                    x.lastName == customer.lastName &&
-                                                    x.phoneNumber == customer.phoneNumber);
+                MessageBox.Show("Uzupełnij wszystkie dane i naciśnij przycisk \"Oblicz\"");
+                return;
             }
-
-            car = cars.Find(x => x.registrationNumber == car.registrationNumber);
-            if (car == null)
+            else if (partsStatus.Contains(PartStatus.Unavailable))
             {
-                car = new CarModel();
-                car.idCustomer = customer.idCustomer;
-                car.brand = brandText.Text;
-                car.model = modelText.Text;
-                car.registrationNumber = registrationNumberText.Text;
+                MessageBox.Show("Części są niedostępne");
+                return;
+            }
+            else
+            {
+                customer = customers.Find(x => x.firstName == firstNameText.Text &&
+                                                    x.lastName == lastNameText.Text &&
+                                                    x.phoneNumber == phoneText.Text);
+                if (customer == null)
+                {
+                    customer = new CustomerModel();
+                    customer.firstName = firstNameText.Text;
+                    customer.lastName = lastNameText.Text;
+                    customer.phoneNumber = phoneText.Text;
+                    customer.adress = adressText.Text;
 
-                DatabaseAccess.saveCar(car);
-                cars = DatabaseAccess.loadCars();
+                    DatabaseAccess.saveCustomer(customer);
+                    customers = DatabaseAccess.loadCustomers();
+                    customer = customers.Find(x => x.firstName == customer.firstName &&
+                                                        x.lastName == customer.lastName &&
+                                                        x.phoneNumber == customer.phoneNumber);
+                }
+
                 car = cars.Find(x => x.registrationNumber == car.registrationNumber);
+                if (car == null)
+                {
+                    car = new CarModel();
+                    car.idCustomer = customer.idCustomer;
+                    car.brand = brandText.Text;
+                    car.model = modelText.Text;
+                    car.registrationNumber = registrationNumberText.Text;
+
+                    DatabaseAccess.saveCar(car);
+                    cars = DatabaseAccess.loadCars();
+                    car = cars.Find(x => x.registrationNumber == car.registrationNumber);
+                }
+
+                //make appointment
+                appointment.idCar = car.idCar;
+                appointment.idWorkplace = chosenWorkplace.idWorkplace;
+                appointment.idEmployee = chosenEmployee.idEmployee;
+                appointment.date = chosenDateTime;
+                appointment.appointmentType = appointmentTypeComboBox.SelectedItem.ToString();
+                appointment.cost = double.Parse(priceTextBlock.Content.ToString());
+                appointment.estimatedTime = double.Parse(estimatedTimeText.Text);
+                appointment.neededParts = neededPartsText.Text;
+
+                DatabaseAccess.saveAppointment(appointment);
+                DatabaseAccess.loadAppointments();
+
+                services = DatabaseAccess.loadServices();
+                customers = DatabaseAccess.loadCustomers();
+                cars = DatabaseAccess.loadCars();
+                appointments = DatabaseAccess.loadAppointments();
+                warehouse = DatabaseAccess.loadWarehouse();
+                orders = DatabaseAccess.loadOrders();
+                employees = DatabaseAccess.loadEmployees();
+                workplaces = DatabaseAccess.loadWorkplace();
+
+                //firstNameText.Text = null;
+                //lastNameText.Text = null;
+                //phoneText.Text = null;
+                //adressText.Text = null;
+                //brandText.Text = null;
+                //modelText.Text = null;
+                //registrationNumberText.Text = null;
+                //appointmentTypeComboBox.SelectedItem = null;
+                //estimatedTimeText.Text = null;
+                //neededPartsText.Text = null;
+
+                //chosenDatePicker.SelectedDate = null;
+                //nearestDateCheckBox.IsChecked = false;
+                //dateTextBlock.Content = null;
+                //priceTextBlock.Content = null;
+                //employeeTextBlock.Content = null;
+                //workplaceTextBlock.Content = null;
             }
-
-            //make appointment
-            appointment.idCar = car.idCar;
-            appointment.idWorkplace = chosenWorkplace.idWorkplace;    
-            appointment.idEmployee = chosenEmployee.idEmployee;
-            appointment.date = chosenDateTime;
-            appointment.appointmentType = appointmentTypeComboBox.SelectedItem.ToString();
-            appointment.cost = double.Parse(priceTextBlock.Content.ToString());
-            appointment.estimatedTime = double.Parse(estimatedTimeText.Text);
-            appointment.neededParts = neededPartsText.Text;
-
-            DatabaseAccess.saveAppointment(appointment);
-            DatabaseAccess.loadAppointments();
-
-            services = DatabaseAccess.loadServices();
-            customers = DatabaseAccess.loadCustomers();
-            cars = DatabaseAccess.loadCars();
-            appointments = DatabaseAccess.loadAppointments();
-            warehouse = DatabaseAccess.loadWarehouse();
-            orders = DatabaseAccess.loadOrders();
-            employees = DatabaseAccess.loadEmployees();
-            workplaces = DatabaseAccess.loadWorkplace();
-
-            //firstNameText.Text = null;
-            //lastNameText.Text = null;
-            //phoneText.Text = null;
-            //adressText.Text = null;
-            //brandText.Text = null;
-            //modelText.Text = null;
-            //registrationNumberText.Text = null;
-            //appointmentTypeComboBox.SelectedItem = null;
-            //estimatedTimeText.Text = null;
-            //neededPartsText.Text = null;
-
-            //chosenDatePicker.SelectedDate = null;
-            //nearestDateCheckBox.IsChecked = false;
-            //dateTextBlock.Content = null;
-            //priceTextBlock.Content = null;
-            //employeeTextBlock.Content = null;
-            //workplaceTextBlock.Content = null;
-
         }
         
         private void calculateButton_Click(object sender, RoutedEventArgs e)
@@ -152,12 +168,14 @@ namespace CarWorkshopUI
             OrdersModel pendingOrder;
             ServiceModel service = services.Find(x => x.serviceName == appointmentTypeComboBox.Text);
 
-            DateTime nearestDate = AppointmentModel.RoundUp(DateTime.UtcNow, TimeSpan.FromMinutes(15));
+            DateTime nearestDate = AppointmentModel.RoundUp(DateTime.Now, TimeSpan.FromMinutes(15));
             bool nearestDateFound = false;
             List<WarehouseModel> confirmedNeededParts = new List<WarehouseModel>();
             List<AppointmentModel> collidingAppointments = new List<AppointmentModel>();
             List<EmployeeModel> availableEmployees = new List<EmployeeModel>();
             List<WorkplaceModel> availableWorkplaces = new List<WorkplaceModel>();
+
+            partsStatus.Clear();
 
             //reset employee and workplace
             chosenEmployee = new EmployeeModel();
@@ -175,7 +193,8 @@ namespace CarWorkshopUI
                 if (part == default) // jak co to sprawdzić default // zrobić wielokrotność potrzebnych części 1 rodzaju
                 {
                     MessageBox.Show("Część: " + item + " nie jest znana");
-                    break;
+                    partsStatus.Add(PartStatus.Unavailable);
+                    return;
                 }
                 else if (part.stockQuantity == 0)
                 {
@@ -183,15 +202,24 @@ namespace CarWorkshopUI
                     if (pendingOrder == default)
                     {
                         MessageBox.Show("Brak części: " + item + " w magazynie"); //rozwinąć ew (przechodzenie do zamówienia części
-                        break;
+                        partsStatus.Add(PartStatus.Unavailable);
+                        return;
                     }
                     else
                     {
-                        if (nearestDate > pendingOrder.realizationDate)
+                        if (nearestDate < pendingOrder.realizationDate)
+                        {
                             nearestDate = AppointmentModel.RoundUp(pendingOrder.realizationDate, TimeSpan.FromMinutes(15)); // If parts are ordered take new available nearestDate
+                            partsStatus.Add(PartStatus.Ordered);
+                        }
+
                     }
                 }
+                else
+                    partsStatus.Add(PartStatus.Available);
+
                 confirmedNeededParts.Add(part);
+
             } //all parts ready
 
             if(!nearestDateCheckBox.IsChecked.Value)
@@ -221,8 +249,8 @@ namespace CarWorkshopUI
             while(!nearestDateFound) //found neares available date
             {
                 collidingAppointments = appointments.FindAll(x => (x.date <= nearestDate && x.GetFinishDate() > nearestDate) ||
-                                                                  (x.date >= nearestDate && x.GetFinishDate() < AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text))) ||
-                                                                  (x.date >= nearestDate && x.date <= AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text)) && x.GetFinishDate() > AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text))));
+                                                                  (x.date >= nearestDate && x.GetFinishDate() <= AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text))) ||
+                                                                  (x.date >= nearestDate && x.date < AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text)) && x.GetFinishDate() > AppointmentModel.GetFinishDate(nearestDate, double.Parse(estimatedTimeText.Text))));
                 if (collidingAppointments.Count != 0)
                 {
                     availableEmployees = new List<EmployeeModel>(employees);
@@ -255,7 +283,7 @@ namespace CarWorkshopUI
                                 return;
                             }
                             else 
-                                AppointmentModel.changeDateToNextWorkDay(nearestDate);
+                                nearestDate = AppointmentModel.changeDateToNextWorkDay(nearestDate);
                         }
                         //następna iteracja
                     }

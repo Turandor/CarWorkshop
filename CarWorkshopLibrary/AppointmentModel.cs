@@ -21,29 +21,32 @@ namespace CarWorkshopLibrary
         public static int startHour = 8;
         public static int endHour = 18;
 
+
+
         public DateTime GetFinishDate()
         {
             //2 while zrobić w 1
             TimeSpan timeLeft;
             TimeSpan endTime = new TimeSpan(endHour, 0, 0);
             DateTime dateTmp = date;
+            double estimatedTimeTmp = estimatedTime;
             int workDays = 0;
-            while(estimatedTime >= (endHour-startHour))
+            while(estimatedTimeTmp >= (endHour-startHour))
             {
                 workDays++;
-                estimatedTime -= (endHour-startHour);
+                estimatedTimeTmp -= (endHour-startHour);
             }
 
             //dateTmp = dateTmp.AddHours(estimatedTime);
             //if (dateTmp.TimeOfDay.h > endTime )
-            if ((dateTmp.Hour + estimatedTime > endHour) || (dateTmp.Hour + estimatedTime == endHour && dateTmp.Minute < 0))
+            if (dateTmp.Hour + estimatedTimeTmp > endHour || (dateTmp.Hour + estimatedTimeTmp == endHour && dateTmp.Minute < 0))
             {
                 timeLeft = (endTime - dateTmp.TimeOfDay);
-                timeLeft = new TimeSpan((int)estimatedTime, 0, 0) - timeLeft;
+                timeLeft = new TimeSpan((int)estimatedTimeTmp, 0, 0) - timeLeft;
                 dateTmp = changeDateToNextWorkDay(dateTmp, timeLeft);
             }
             else
-                dateTmp = dateTmp.AddHours(estimatedTime);
+                dateTmp = dateTmp.AddHours(estimatedTimeTmp);
 
             TimeSpan time = dateTmp.TimeOfDay;
             while (workDays != 0)
@@ -68,7 +71,7 @@ namespace CarWorkshopLibrary
 
             //dateTmp = dateTmp.AddHours(estimatedTime);
             //if (dateTmp.TimeOfDay.h > endTime )
-            if (dateTmp.Hour + estimatedTime > endHour) //|| (dateTmp.Hour + estimatedTime == endHour && dateTmp.Minute < 0))
+            if (dateTmp.Hour + estimatedTime > endHour || (dateTmp.Hour + estimatedTime == endHour && dateTmp.Minute < 0))
             {
                 timeLeft = (endTime - dateTmp.TimeOfDay);
                 timeLeft = new TimeSpan((int)estimatedTime, 0, 0) - timeLeft;
