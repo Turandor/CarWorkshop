@@ -18,14 +18,6 @@ namespace CarWorkshopUI
     /// <summary>
     /// Logika interakcji dla klasy ManageTasksWindow.xaml
     /// </summary>
-
-    public enum PartStatus
-    {
-        Available,
-        Ordered,
-        Unavailable
-    }
-
     public partial class ManageTasksWindow : Window
     {
         List<CustomerModel> customers = new List<CustomerModel>();
@@ -40,8 +32,9 @@ namespace CarWorkshopUI
         EmployeeModel chosenEmployee = new EmployeeModel();
         WorkplaceModel chosenWorkplace = new WorkplaceModel();
         DateTime chosenDateTime = new DateTime();
+        List<PartObject> chosenPartsList = new List<PartObject>();
 
-        List<PartStatus> partsStatus;
+        Dictionary<string, PartStatus> partsStatus = new Dictionary<string, PartStatus>();
         public ManageTasksWindow()
         {
             InitializeComponent();
@@ -69,98 +62,136 @@ namespace CarWorkshopUI
 
         private void confirmButton_Click(object sender, RoutedEventArgs e)
         {
+            services = DatabaseAccess.loadServices();
+            customers = DatabaseAccess.loadCustomers();
+            cars = DatabaseAccess.loadCars();
+            appointments = DatabaseAccess.loadAppointments();
+            warehouse = DatabaseAccess.loadWarehouse();
+            orders = DatabaseAccess.loadOrders();
+            employees = DatabaseAccess.loadEmployees();
+            workplaces = DatabaseAccess.loadWorkplace();
+
             CustomerModel customer = new CustomerModel();
             CarModel car = new CarModel();
             AppointmentModel appointment = new AppointmentModel();
+            WarehouseModel part;
+            OrdersModel orderedPart;
 
+            /*
             if (partsStatus.Count == 0)
             {
                 MessageBox.Show("Uzupełnij wszystkie dane i naciśnij przycisk \"Oblicz\"");
                 return;
             }
-            else if (partsStatus.Contains(PartStatus.Unavailable))
-            {
-                MessageBox.Show("Części są niedostępne");
-                return;
-            }
             else
             {
-                customer = customers.Find(x => x.firstName == firstNameText.Text &&
-                                                    x.lastName == lastNameText.Text &&
-                                                    x.phoneNumber == phoneText.Text);
-                if (customer == null)
+                foreach (var item in partsStatus)
                 {
-                    customer = new CustomerModel();
-                    customer.firstName = firstNameText.Text;
-                    customer.lastName = lastNameText.Text;
-                    customer.phoneNumber = phoneText.Text;
-                    customer.adress = adressText.Text;
-
-                    DatabaseAccess.saveCustomer(customer);
-                    customers = DatabaseAccess.loadCustomers();
-                    customer = customers.Find(x => x.firstName == customer.firstName &&
-                                                        x.lastName == customer.lastName &&
-                                                        x.phoneNumber == customer.phoneNumber);
+                    if (partsStatus.Count == 0)
+                    {
+                        MessageBox.Show("Uzupełnij wszystkie dane i naciśnij przycisk \"Oblicz\"");
+                        return;
+                    }
+                    else if (partsStatus.ContainsValue(PartStatus.Unavailable))
+                    {
+                        MessageBox.Show("Części są niedostępne");
+                        return;
+                    }
                 }
-
-                car = cars.Find(x => x.registrationNumber == car.registrationNumber);
-                if (car == null)
-                {
-                    car = new CarModel();
-                    car.idCustomer = customer.idCustomer;
-                    car.brand = brandText.Text;
-                    car.model = modelText.Text;
-                    car.registrationNumber = registrationNumberText.Text;
-
-                    DatabaseAccess.saveCar(car);
-                    cars = DatabaseAccess.loadCars();
-                    car = cars.Find(x => x.registrationNumber == car.registrationNumber);
-                }
-
-                //make appointment
-                appointment.idCar = car.idCar;
-                appointment.idWorkplace = chosenWorkplace.idWorkplace;
-                appointment.idEmployee = chosenEmployee.idEmployee;
-                appointment.date = chosenDateTime;
-                appointment.appointmentType = appointmentTypeComboBox.SelectedItem.ToString();
-                appointment.cost = double.Parse(priceTextBlock.Content.ToString());
-                appointment.estimatedTime = double.Parse(estimatedTimeText.Text);
-                appointment.neededParts = neededPartsText.Text;
-
-                DatabaseAccess.saveAppointment(appointment);
-                DatabaseAccess.loadAppointments();
-
-                services = DatabaseAccess.loadServices();
-                customers = DatabaseAccess.loadCustomers();
-                cars = DatabaseAccess.loadCars();
-                appointments = DatabaseAccess.loadAppointments();
-                warehouse = DatabaseAccess.loadWarehouse();
-                orders = DatabaseAccess.loadOrders();
-                employees = DatabaseAccess.loadEmployees();
-                workplaces = DatabaseAccess.loadWorkplace();
-
-                //firstNameText.Text = null;
-                //lastNameText.Text = null;
-                //phoneText.Text = null;
-                //adressText.Text = null;
-                //brandText.Text = null;
-                //modelText.Text = null;
-                //registrationNumberText.Text = null;
-                //appointmentTypeComboBox.SelectedItem = null;
-                //estimatedTimeText.Text = null;
-                //neededPartsText.Text = null;
-
-                //chosenDatePicker.SelectedDate = null;
-                //nearestDateCheckBox.IsChecked = false;
-                //dateTextBlock.Content = null;
-                //priceTextBlock.Content = null;
-                //employeeTextBlock.Content = null;
-                //workplaceTextBlock.Content = null;
             }
-        }
+            */
+
+            customer = customers.Find(x => x.firstName == firstNameText.Text &&
+                                                x.lastName == lastNameText.Text &&
+                                                x.phoneNumber == phoneText.Text);
+            if (customer == null)
+            {
+                customer = new CustomerModel();
+                customer.firstName = firstNameText.Text;
+                customer.lastName = lastNameText.Text;
+                customer.phoneNumber = phoneText.Text;
+                customer.adress = adressText.Text;
+
+                DatabaseAccess.saveCustomer(customer);
+                customers = DatabaseAccess.loadCustomers();
+                customer = customers.Find(x => x.firstName == customer.firstName &&
+                                                    x.lastName == customer.lastName &&
+                                                    x.phoneNumber == customer.phoneNumber);
+            }
+
+            car = cars.Find(x => x.registrationNumber == car.registrationNumber);
+            if (car == null)
+            {
+                car = new CarModel();
+                car.idCustomer = customer.idCustomer;
+                car.brand = brandText.Text;
+                car.model = modelText.Text;
+                car.registrationNumber = registrationNumberText.Text;
+
+                DatabaseAccess.saveCar(car);
+                cars = DatabaseAccess.loadCars();
+                car = cars.Find(x => x.registrationNumber == car.registrationNumber);
+            }
+
+            //make appointment
+            appointment.idCar = car.idCar;
+            appointment.idWorkplace = chosenWorkplace.idWorkplace;
+            appointment.idEmployee = chosenEmployee.idEmployee;
+            appointment.date = chosenDateTime;
+            appointment.appointmentType = appointmentTypeComboBox.SelectedItem.ToString();
+            appointment.cost = double.Parse(priceTextBlock.Content.ToString());
+            appointment.estimatedTime = double.Parse(estimatedTimeText.Text);
+            appointment.neededParts = neededPartsText.Text;
+
+            foreach (var item in chosenPartsList)
+            {
+                part = warehouse.Find(x => x.partName == item.partName);
+                if (item.partStatus == CarWorkshopLibrary.PartStatus.Ordered)
+                {
+                    orderedPart = orders.Find(x => x.idParts == part.idParts && x.amount >= x.bookedAmount && x.status != "zrealizowane");
+                    orderedPart.bookedAmount += 1;
+                    DatabaseAccess.updateOrderBookedAmount(orderedPart);
+                } 
+                else if (item.partStatus == CarWorkshopLibrary.PartStatus.Available)
+                {
+                    part.stockQuantity -= 1;
+                    DatabaseAccess.updateWarehouse(part);
+                }
+            }
+
+            DatabaseAccess.saveAppointment(appointment);
+            DatabaseAccess.loadAppointments();
+
+            //firstNameText.Text = null;
+            //lastNameText.Text = null;
+            //phoneText.Text = null;
+            //adressText.Text = null;
+            //brandText.Text = null;
+            //modelText.Text = null;
+            //registrationNumberText.Text = null;
+            //appointmentTypeComboBox.SelectedItem = null;
+            //estimatedTimeText.Text = null;
+            //neededPartsText.Text = null;
+
+            //chosenDatePicker.SelectedDate = null;
+            //nearestDateCheckBox.IsChecked = false;
+            //dateTextBlock.Content = null;
+            //priceTextBlock.Content = null;
+            //employeeTextBlock.Content = null;
+            //workplaceTextBlock.Content = null;
+    }
         
         private void calculateButton_Click(object sender, RoutedEventArgs e)
         {
+            services = DatabaseAccess.loadServices();
+            customers = DatabaseAccess.loadCustomers();
+            cars = DatabaseAccess.loadCars();
+            appointments = DatabaseAccess.loadAppointments();
+            warehouse = DatabaseAccess.loadWarehouse();
+            orders = DatabaseAccess.loadOrders();
+            employees = DatabaseAccess.loadEmployees();
+            workplaces = DatabaseAccess.loadWorkplace();
+
             string[] separator = new string[]{ ", " };
             string[] neededParts = neededPartsText.Text.Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
@@ -175,7 +206,10 @@ namespace CarWorkshopUI
             List<EmployeeModel> availableEmployees = new List<EmployeeModel>();
             List<WorkplaceModel> availableWorkplaces = new List<WorkplaceModel>();
 
-            partsStatus.Clear();
+            OrdersModel orderedPart;
+            PartObject chosenPart = new PartObject("",PartStatus.Unavailable,0);
+
+            chosenPartsList.Clear();
 
             //reset employee and workplace
             chosenEmployee = new EmployeeModel();
@@ -190,19 +224,22 @@ namespace CarWorkshopUI
             foreach (var item in neededParts)
             {
                 part = warehouse.Find(x => x.partName == item); //by names 
-                if (part == default) // jak co to sprawdzić default // zrobić wielokrotność potrzebnych części 1 rodzaju
+                orderedPart = orders.Find(x => x.idParts == part.idParts && x.amount >= x.bookedAmount && x.status != "zrealizowane");
+                if (part == default)
                 {
                     MessageBox.Show("Część: " + item + " nie jest znana");
-                    partsStatus.Add(PartStatus.Unavailable);
+                    chosenPart = new PartObject(item, PartStatus.Unavailable, 0);
+                    chosenPartsList.Add(chosenPart);
                     return;
                 }
-                else if (part.stockQuantity == 0)
+                else if (part.stockQuantity == 0)  
                 {
-                    pendingOrder = orders.Find(x => x.idParts == part.idParts && x.status != "zrealizowane");  //do zastanowienia: więcej wizyt niż zamówień na te same częśći (3 silniki 4 wymiany)
+                    pendingOrder = orders.Find(x => x.idParts == part.idParts && x.status != "zrealizowane");  
                     if (pendingOrder == default)
                     {
                         MessageBox.Show("Brak części: " + item + " w magazynie"); //rozwinąć ew (przechodzenie do zamówienia części
-                        partsStatus.Add(PartStatus.Unavailable);
+                        chosenPart = new PartObject(item, CarWorkshopLibrary.PartStatus.Unavailable, 0);
+                        chosenPartsList.Add(chosenPart);
                         return;
                     }
                     else
@@ -210,13 +247,19 @@ namespace CarWorkshopUI
                         if (nearestDate < pendingOrder.realizationDate)
                         {
                             nearestDate = AppointmentModel.RoundUp(pendingOrder.realizationDate, TimeSpan.FromMinutes(15)); // If parts are ordered take new available nearestDate
-                            partsStatus.Add(PartStatus.Ordered);
+                            if (!AppointmentModel.isWorkDay(nearestDate) || !AppointmentModel.isWorkHour(nearestDate))
+                                nearestDate = AppointmentModel.changeDateToNextWorkDay(nearestDate);
+                            chosenPart = new PartObject(item, PartStatus.Ordered, orderedPart.amount);
+                            chosenPartsList.Add(chosenPart);
                         }
-
                     }
                 }
                 else
-                    partsStatus.Add(PartStatus.Available);
+                {
+                    chosenPart = new PartObject(item,PartStatus.Available, part.stockQuantity);
+                    warehouse[warehouse.FindIndex(x => x.partName == item)].stockQuantity -= 1;
+                    chosenPartsList.Add(chosenPart);
+                }
 
                 confirmedNeededParts.Add(part);
 

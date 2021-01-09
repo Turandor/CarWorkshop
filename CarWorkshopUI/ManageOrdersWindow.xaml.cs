@@ -56,6 +56,7 @@ namespace CarWorkshopUI
             orders.orderDate = RoundUp(DateTime.Now,TimeSpan.FromMinutes(1));
             orders.realizationDate = orders.orderDate.AddDays(int.Parse(deliveryTimeText.Text));
             orders.status = "w realizacji";
+            orders.bookedAmount = 0;
             
 
             DatabaseAccess.saveOrders(orders);
@@ -80,6 +81,7 @@ namespace CarWorkshopUI
             order.orderDate = selectedOrder.orderDate;
             order.status = selectedOrder.status;
             order.realizationDate = selectedOrder.realizationDate;
+            order.bookedAmount = selectedOrder.bookedAmount;
 
             var warehouse = DatabaseAccess.loadWarehouse();
             WarehouseModel part = new WarehouseModel();

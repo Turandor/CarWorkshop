@@ -100,7 +100,7 @@ namespace CarWorkshopLibrary
         {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
             {
-                cnn.Execute("insert into Orders (idParts, amount, orderDate, status, realizationDate) values (@idParts, @amount, @orderDate, @status, @realizationDate)", orders);
+                cnn.Execute("insert into Orders (idParts, amount, orderDate, status, realizationDate, bookedAmount) values (@idParts, @amount, @orderDate, @status, @realizationDate, 0)", orders);
             }
         }
 
@@ -114,8 +114,16 @@ namespace CarWorkshopLibrary
                 }
                 using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
                 {
-                    cnn.Execute("update Warehouse set stockQuantity = stockQuantity + @amount where idParts = @idParts", orders);
+                    cnn.Execute("update Warehouse set stockQuantity = stockQuantity + @amount - @bookedAmount where idParts = @idParts", orders);
                 }
+            }
+        }
+
+        public static void updateOrderBookedAmount(OrdersModel orders)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                cnn.Execute("update Orders set bookedAmount = @bookedAmount where idOrder = @idOrder", orders);
             }
         }
 

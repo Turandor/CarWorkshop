@@ -57,6 +57,7 @@
     <Compile Include="CustomerModel.cs" />
     <Compile Include="DatabaseAccess.cs" />
     <Compile Include="OrdersModel.cs" />
+    <Compile Include="PartObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceModel.cs" />
     <Compile Include="WarehouseModel.cs" />
