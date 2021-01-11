@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CarWorkshopLibrary;
+using System.Windows.Forms;
 
 namespace CarWorkshopUI
 {
@@ -34,7 +35,6 @@ namespace CarWorkshopUI
         DateTime chosenDateTime = new DateTime();
         List<PartObject> chosenPartsList = new List<PartObject>();
 
-        Dictionary<string, PartStatus> partsStatus = new Dictionary<string, PartStatus>();
         public ManageTasksWindow()
         {
             InitializeComponent();
@@ -162,25 +162,26 @@ namespace CarWorkshopUI
             DatabaseAccess.saveAppointment(appointment);
             DatabaseAccess.loadAppointments();
 
-            //firstNameText.Text = null;
-            //lastNameText.Text = null;
-            //phoneText.Text = null;
-            //adressText.Text = null;
-            //brandText.Text = null;
-            //modelText.Text = null;
-            //registrationNumberText.Text = null;
-            //appointmentTypeComboBox.SelectedItem = null;
-            //estimatedTimeText.Text = null;
-            //neededPartsText.Text = null;
 
-            //chosenDatePicker.SelectedDate = null;
-            //nearestDateCheckBox.IsChecked = false;
-            //dateTextBlock.Content = null;
-            //priceTextBlock.Content = null;
-            //employeeTextBlock.Content = null;
-            //workplaceTextBlock.Content = null;
-    }
-        
+            firstNameText.Text = null;
+            lastNameText.Text = null;
+            phoneText.Text = null;
+            adressText.Text = null;
+            brandText.Text = null;
+            modelText.Text = null;
+            registrationNumberText.Text = null;
+            appointmentTypeComboBox.SelectedItem = null;
+            estimatedTimeText.Text = null;
+            neededPartsText.Text = null;
+
+            chosenDatePicker.SelectedDate = null;
+            nearestDateCheckBox.IsChecked = false;
+            dateTextBlock.Content = null;
+            priceTextBlock.Content = null;
+            employeeTextBlock.Content = null;
+            workplaceTextBlock.Content = null;
+        }
+
         private void calculateButton_Click(object sender, RoutedEventArgs e)
         {
             services = DatabaseAccess.loadServices();
@@ -208,6 +209,9 @@ namespace CarWorkshopUI
 
             OrdersModel orderedPart;
             PartObject chosenPart = new PartObject("",PartStatus.Unavailable,0);
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            string caption = "Czy chcesz ją zamówić?";
+            DialogResult result;
 
             chosenPartsList.Clear();
 
@@ -224,23 +228,32 @@ namespace CarWorkshopUI
             foreach (var item in neededParts)
             {
                 part = warehouse.Find(x => x.partName == item); //by names 
-                orderedPart = orders.Find(x => x.idParts == part.idParts && x.amount >= x.bookedAmount && x.status != "zrealizowane");
+                orderedPart = orders.Find(x => x.idParts == part.idParts && x.amount > x.bookedAmount && x.status != "zrealizowane");
                 if (part == default)
                 {
-                    MessageBox.Show("Część: " + item + " nie jest znana");
+                    System.Windows.Forms.MessageBox.Show("Część: " + item + " nie jest znana");
                     chosenPart = new PartObject(item, PartStatus.Unavailable, 0);
                     chosenPartsList.Add(chosenPart);
                     return;
                 }
                 else if (part.stockQuantity == 0)  
                 {
-                    pendingOrder = orders.Find(x => x.idParts == part.idParts && x.status != "zrealizowane");  
+                    pendingOrder = orders.Find(x => x.idParts == part.idParts && x.status != "zrealizowane" && x.amount > x.bookedAmount);  
                     if (pendingOrder == default)
                     {
-                        MessageBox.Show("Brak części: " + item + " w magazynie"); //rozwinąć ew (przechodzenie do zamówienia części
-                        chosenPart = new PartObject(item, CarWorkshopLibrary.PartStatus.Unavailable, 0);
-                        chosenPartsList.Add(chosenPart);
-                        return;
+                        result = System.Windows.Forms.MessageBox.Show("Brak części: " + item + " w magazynie.", caption, buttons); //rozwinąć ew (przechodzenie do zamówienia części
+                        if(result == System.Windows.Forms.DialogResult.Yes)
+                        {
+                            ManageOrdersWindow objManageOrdersWindow = new ManageOrdersWindow();
+                            objManageOrdersWindow.Show();
+                            this.Close();
+                        }
+                        else
+                        {
+                            chosenPart = new PartObject(item, PartStatus.Unavailable, 0);
+                            chosenPartsList.Add(chosenPart);
+                            return;
+                        }
                     }
                     else
                     {
@@ -250,6 +263,7 @@ namespace CarWorkshopUI
                             if (!AppointmentModel.isWorkDay(nearestDate) || !AppointmentModel.isWorkHour(nearestDate))
                                 nearestDate = AppointmentModel.changeDateToNextWorkDay(nearestDate);
                             chosenPart = new PartObject(item, PartStatus.Ordered, orderedPart.amount);
+                            orders[orders.FindIndex(x => x.idOrder == orderedPart.idOrder)].bookedAmount += 1;
                             chosenPartsList.Add(chosenPart);
                         }
                     }
@@ -276,14 +290,14 @@ namespace CarWorkshopUI
                     }
                     else if (nearestDate.Date > chosenDatePicker.SelectedDate)
                     {
-                        MessageBox.Show("Brak części lub zły termin");
+                        System.Windows.Forms.MessageBox.Show("Brak części lub zły termin");
                         return;
                     }
                     // if equal take nearestDate
                 }
                 else
                 {
-                    MessageBox.Show("Warsztat nieczynny w weekendy");
+                    System.Windows.Forms.MessageBox.Show("Warsztat nieczynny w weekendy");
                     return;
                 }
 
@@ -322,7 +336,7 @@ namespace CarWorkshopUI
                         {
                             if (!nearestDateCheckBox.IsChecked.Value)
                             {
-                                MessageBox.Show("Brak wolnych godzin w wybranym dniu");
+                                System.Windows.Forms.MessageBox.Show("Brak wolnych godzin w wybranym dniu");
                                 return;
                             }
                             else 
