@@ -22,10 +22,14 @@ namespace CarWorkshopUI
     public partial class ManageOrdersWindow : Window
     {
         List<OrdersModel> orders = new List<OrdersModel>();
+        List<WarehouseModel> warehouse = new List<WarehouseModel>();
+        WarehouseModel selectedPart;
+
         public ManageOrdersWindow()
         {
             InitializeComponent();
 
+            warehouse = DatabaseAccess.loadWarehouse();
             loadOrdersList();
         }
 
@@ -101,6 +105,22 @@ namespace CarWorkshopUI
         public static DateTime RoundUp(DateTime dt, TimeSpan d)
         {
             return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
+        }
+
+        private void partNameText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            selectedPart = warehouse.Find(x => x.partName == partNameText.Text);
+            if (selectedPart != null)
+                idPartsText.Text = selectedPart.idParts.ToString();
+        }
+
+        private void idPartsText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int partID;
+            if (int.TryParse(idPartsText.Text, out partID))
+                selectedPart = warehouse.Find(x => x.idParts == int.Parse(idPartsText.Text));
+            if (selectedPart != null)
+                partNameText.Text = selectedPart.partName;
         }
     }
 }

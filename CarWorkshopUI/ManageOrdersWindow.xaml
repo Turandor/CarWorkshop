@@ -13,9 +13,9 @@
         <Button x:Name="addOrdersButton" Content="Dodaj zamówienie" HorizontalAlignment="Left" Margin="385,360,0,0" VerticalAlignment="Top" Width="163" Height="41" FontSize="18" RenderTransformOrigin="3.305,2.576" Click="addOrdersButton_Click"/>
         <Button x:Name="confirmButton" Content="Potwierdź realizacje" HorizontalAlignment="Left" Margin="586,361,0,0" VerticalAlignment="Top" Width="163" Height="41" FontSize="18" RenderTransformOrigin="3.305,2.576" Click="confirmOrderButton_Click"/>
         <Label Content="ID części" HorizontalAlignment="Left" Height="32" Margin="42,74,0,0" VerticalAlignment="Top" Width="111" FontSize="15"/>
-        <TextBox x:Name="idPartsText" HorizontalAlignment="Left" Height="23" Margin="42,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="261"/>
+        <TextBox x:Name="idPartsText" HorizontalAlignment="Left" Height="23" Margin="42,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="261" TextChanged="idPartsText_TextChanged"/>
         <Label Content="Nazwa" HorizontalAlignment="Left" Height="32" Margin="42,139,0,0" VerticalAlignment="Top" Width="90" FontSize="15" RenderTransformOrigin="0.333,-0.469"/>
-        <TextBox x:Name="partNameText" HorizontalAlignment="Left" Height="23" Margin="42,176,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="261"/>
+        <TextBox x:Name="partNameText" HorizontalAlignment="Left" Height="23" Margin="42,176,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="261" TextChanged="partNameText_TextChanged"/>
         <Label Content="Ilość" HorizontalAlignment="Left" Height="32" Margin="42,204,0,0" VerticalAlignment="Top" Width="111" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
         <TextBox x:Name="amountText" HorizontalAlignment="Left" Height="23" Margin="42,241,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="261"/>
         <Label Content="Czas dostawy (w dniach):" HorizontalAlignment="Left" Height="32" Margin="128,269,0,0" VerticalAlignment="Top" Width="175" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>

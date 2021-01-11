@@ -8,20 +8,42 @@
         Title="BrowseCalendarWindow" Height="450" Width="800">
     <Grid>
         <Button x:Name="goBackButton" Content="Wróć" HorizontalAlignment="Left" Height="26" Margin="42,375,0,0" VerticalAlignment="Top" Width="58" FontSize="18" Click="goBackButton_Click"/>
-        <Label Content="Przeglądanie kalendarza" HorizontalAlignment="Left" Height="37" Margin="42,37,0,0" VerticalAlignment="Top" Width="248" FontSize="20" FontWeight="Bold"/>
-        <Label Content="Wizyty w wybranym dniu" Height="37" Margin="385,41,157,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
-        <ListView x:Name="listOrdersListView" HorizontalAlignment="Left" Height="283" Margin="385,78,0,0" VerticalAlignment="Top" Width="364" ItemsSource="{Binding SourceCollection}" HorizontalContentAlignment="Center">
+        <Label Content="Przeglądanie kalendarza" HorizontalAlignment="Left" Height="37" Margin="24,39,0,0" VerticalAlignment="Top" Width="248" FontSize="20" FontWeight="Bold"/>
+        <Label Content="Wizyty w wybranym dniu" Height="37" Margin="340,41,202,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+        <ListView x:Name="listOrdersListView" HorizontalAlignment="Left" Height="283" Margin="296,78,0,0" VerticalAlignment="Top" Width="486" ItemsSource="{Binding SourceCollection}" HorizontalContentAlignment="Center">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="Auto" Header="Godzina" DisplayMemberBinding="{Binding idOrder}"/>
-                    <GridViewColumn Width="Auto" Header="ID Wizyty " DisplayMemberBinding="{Binding idParts}"/>
-                    <GridViewColumn Width="Auto" Header="Pracownik" DisplayMemberBinding="{Binding amount}" />
-                    <GridViewColumn Width="Auto" Header="Stanowisko" DisplayMemberBinding="{Binding orderDate}" />
+                    <GridViewColumn Width="Auto" Header="ID Wizyty " DisplayMemberBinding="{Binding idAppointment}"/>
+                    <GridViewColumn Width="Auto" Header="Data" DisplayMemberBinding="{Binding date}"/>
+                    <GridViewColumn Width="Auto" Header="Typ" DisplayMemberBinding="{Binding appointmentType}"/>
+                    <GridViewColumn Width="Auto" Header="Pracownik" DisplayMemberBinding="{Binding idEmployee}" />
+                    <GridViewColumn Width="Auto" Header="Stanowisko" DisplayMemberBinding="{Binding idWorkplace}" />
                 </GridView>
             </ListView.View>
         </ListView>
-        <Calendar HorizontalAlignment="Left" Margin="76,125,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.12,-1.213" Height="173" Width="197"/>
+        <StackPanel>
+            <StackPanel.Resources>
+                <Style x:Key="styleCalendar" TargetType="{x:Type Calendar}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Calendar}">
+                                <!-- Wrapping in ViewBox will enlarge calendar of that size.-->
+                                <Viewbox Height="300">
+                                    <CalendarItem x:Name="PART_CalendarItem"
+                              Background="{TemplateBinding Background}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}"/>
+                                </Viewbox>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </StackPanel.Resources>
+            <Calendar  x:Name="calendar" HorizontalAlignment="Left" Margin="20,90,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.12,-1.213" Height="252" Width="259"
+              Style="{StaticResource styleCalendar}" SelectedDatesChanged="calendar_SelectedDatesChanged"/>
+        </StackPanel>
 
 
     </Grid>
+
 </Window>
