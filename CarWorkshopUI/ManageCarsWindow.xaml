@@ -1,0 +1,41 @@
+﻿<Window x:Class="CarWorkshopUI.ManageCarsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CarWorkshopUI"
+        mc:Ignorable="d"
+        Title="ManageCarsWindow" Height="450" Width="800">
+    <Grid>
+        <Label Content="Edytuj Samochód" HorizontalAlignment="Left" Height="37" Margin="42,37,0,0" VerticalAlignment="Top" Width="181" FontSize="20" FontWeight="Bold"/>
+        <Label Content="Lista Samochodów" HorizontalAlignment="Left" Height="37" Margin="385,37,0,0" VerticalAlignment="Top" Width="185" FontSize="20" FontWeight="Bold"/>
+        <Label Content="Marka:" HorizontalAlignment="Left" Height="32" Margin="42,74,0,0" VerticalAlignment="Top" Width="80" FontSize="15"/>
+        <Label Content="Model:" HorizontalAlignment="Left" Height="32" Margin="42,129,0,0" VerticalAlignment="Top" Width="80" FontSize="15" RenderTransformOrigin="0.333,-0.469"/>
+        <Label Content="Numer Rejestracyjny:" HorizontalAlignment="Left" Height="32" Margin="42,184,0,0" VerticalAlignment="Top" Width="181" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
+        <TextBox x:Name="brandText" HorizontalAlignment="Left" Height="23" Margin="42,106,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="303"/>
+        <TextBox x:Name="modelText" HorizontalAlignment="Left" Height="23" Margin="42,161,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="303"/>
+        <TextBox x:Name="registrationNumberText" HorizontalAlignment="Left" Height="23" Margin="42,216,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="303"/>
+        <Button x:Name="editCarButton" Content="Edytuj Samochód" HorizontalAlignment="Left" Margin="385,360,0,0" VerticalAlignment="Top" Width="185" Height="41" FontSize="18" Click="editCarButton_Click" />
+        <Button x:Name="goBackButton" Content="Wróć" HorizontalAlignment="Left" Height="26" Margin="42,375,0,0" VerticalAlignment="Top" Width="58" FontSize="18" Click="goBackButton_Click"/>
+        <Button x:Name="deleteCar" Content="Usuń Samochód" HorizontalAlignment="Left" Margin="570,360,0,0" VerticalAlignment="Top" Width="179" Height="41" FontSize="18" Click="deleteCar_Click"/>
+        <ListView x:Name="listCarsListView" HorizontalAlignment="Left" Height="283" Margin="385,78,0,0" VerticalAlignment="Top" Width="364" ItemsSource="{Binding SourceCollection}" SelectionChanged="listCarsListView_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="Auto" Header="ID" DisplayMemberBinding="{Binding idCar}"/>
+                    <GridViewColumn Width="Auto" Header="ID właściela" DisplayMemberBinding="{Binding idCustomer}"/>
+                    <GridViewColumn Width="Auto" Header="Marka" DisplayMemberBinding="{Binding brand}" />
+                    <GridViewColumn Width="Auto" Header="Model" DisplayMemberBinding="{Binding model}" />
+                    <GridViewColumn Width="Auto" Header="Numer rejestracyjny" DisplayMemberBinding="{Binding registrationNumber}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label Content="Właściel:" HorizontalAlignment="Left" Margin="42,244,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.313,-0.045" Width="181" FontSize="18" FontWeight="Bold"/>
+        <Label Content="Imię i Nazwisko:" HorizontalAlignment="Left" Height="32" Margin="42,278,0,0" VerticalAlignment="Top" Width="120" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
+        <Label Content="Numer telefonu:" HorizontalAlignment="Left" Height="32" Margin="42,310,0,0" VerticalAlignment="Top" Width="120" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
+        <Label Content="Adres:" HorizontalAlignment="Left" Height="32" Margin="42,340,0,0" VerticalAlignment="Top" Width="120" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
+        <Label x:Name="nameText" Content="Imię i Nazwisko" HorizontalAlignment="Left" Height="32" Margin="167,278,0,0" VerticalAlignment="Top" Width="178" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
+        <Label x:Name="phoneNumberText" Content="Numer telefonu" HorizontalAlignment="Left" Height="32" Margin="167,310,0,0" VerticalAlignment="Top" Width="178" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
+        <Label x:Name="adressText" Content="Adres" HorizontalAlignment="Left" Height="32" Margin="167,339,0,0" VerticalAlignment="Top" Width="178" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
+
+    </Grid>
+</Window>

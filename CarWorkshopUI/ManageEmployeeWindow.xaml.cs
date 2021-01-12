@@ -18,16 +18,20 @@ namespace CarWorkshopUI
     public partial class ManageEmployeeWindow : Window
     {
         List<EmployeeModel> employee = new List<EmployeeModel>();
+        List<AppointmentModel> appointments = new List<AppointmentModel>();
+
         public ManageEmployeeWindow()
         {
             InitializeComponent();
 
             loadEmployeesList();
+
         }
 
         private void loadEmployeesList()
         {
             employee = DatabaseAccess.loadEmployees();
+            appointments = DatabaseAccess.loadAppointments();
 
             wireUpEmployeesList();
         }
@@ -64,19 +68,55 @@ namespace CarWorkshopUI
 
         private void deleteEmployee_Click(object sender, RoutedEventArgs e) 
         {
-            EmployeeModel employee = new EmployeeModel();
+            EmployeeModel selectedEmployee = (dynamic)listEmployeesListView.SelectedItems[0];
+            List<AppointmentModel> selectedAppointments = appointments.FindAll(x => x.idEmployee == selectedEmployee.idEmployee);
 
-            var selectedEmployee = (dynamic)listEmployeesListView.SelectedItems[0];
+            DatabaseAccess.deleteEmployee(selectedEmployee);
 
-            employee.idEmployee = selectedEmployee.idEmployee;
-            employee.firstName = selectedEmployee.firstName;
-            employee.lastName = selectedEmployee.lastName;
-            employee.specialization = selectedEmployee.specialization;
+            foreach (var item in selectedAppointments)
+            {
+                DatabaseAccess.deleteAppointment(item);
+            }
 
-
-            DatabaseAccess.deleteEmployee(employee);
 
             loadEmployeesList();
+            appointments = DatabaseAccess.loadAppointments();
+
+            firstNameText.Text = null;
+            lastNameText.Text = null;
+            specializationText.Text = null;
+        }
+
+        private void editEmployeeButton_Click(object sender, RoutedEventArgs e)
+        {
+            EmployeeModel selectedEmployee = (dynamic)listEmployeesListView.SelectedItems[0];
+
+            selectedEmployee.firstName = firstNameText.Text;
+            selectedEmployee.lastName = lastNameText.Text;
+            selectedEmployee.specialization = specializationText.Text;
+
+            DatabaseAccess.updateEmployee(selectedEmployee);
+
+            loadEmployeesList();
+
+            firstNameText.Text = null;
+            lastNameText.Text = null;
+            specializationText.Text = null;
+        }
+
+        private void listEmployeesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                EmployeeModel selectedEmployee = (dynamic)listEmployeesListView.SelectedItems[0];
+
+                firstNameText.Text = selectedEmployee.firstName;
+                lastNameText.Text = selectedEmployee.lastName;
+                specializationText.Text = selectedEmployee.specialization;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+            }
         }
     }
 }

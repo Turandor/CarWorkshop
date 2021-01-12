@@ -8,9 +8,10 @@
         Title="BrowseCalendarWindow" Height="450" Width="800">
     <Grid>
         <Button x:Name="goBackButton" Content="Wróć" HorizontalAlignment="Left" Height="26" Margin="42,375,0,0" VerticalAlignment="Top" Width="58" FontSize="18" Click="goBackButton_Click"/>
-        <Label Content="Przeglądanie kalendarza" HorizontalAlignment="Left" Height="37" Margin="24,39,0,0" VerticalAlignment="Top" Width="248" FontSize="20" FontWeight="Bold"/>
-        <Label Content="Wizyty w wybranym dniu" Height="37" Margin="340,41,202,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
-        <ListView x:Name="listOrdersListView" HorizontalAlignment="Left" Height="283" Margin="296,78,0,0" VerticalAlignment="Top" Width="486" ItemsSource="{Binding SourceCollection}" HorizontalContentAlignment="Center">
+        <Label Content="Przeglądanie kalendarza" HorizontalAlignment="Left" Height="37" Margin="10,10,0,0" VerticalAlignment="Top" Width="248" FontSize="20" FontWeight="Bold"/>
+        <Label Content="Wizyty w wybranym dniu" Height="37" Margin="296,10,245.6,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+        <Label Content="Pracownik:" Height="37" Margin="296,247,387.6,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+        <ListView x:Name="listOrdersListView" HorizontalAlignment="Left" Height="160" Margin="296,52,0,0" VerticalAlignment="Top" Width="488" ItemsSource="{Binding SourceCollection}" HorizontalContentAlignment="Center" SelectionChanged="listOrdersListView_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="Auto" Header="ID Wizyty " DisplayMemberBinding="{Binding idAppointment}"/>
@@ -21,7 +22,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <StackPanel>
+        <StackPanel Margin="-10,0,9.6,0">
             <StackPanel.Resources>
                 <Style x:Key="styleCalendar" TargetType="{x:Type Calendar}">
                     <Setter Property="Template">
@@ -39,9 +40,25 @@
                     </Setter>
                 </Style>
             </StackPanel.Resources>
-            <Calendar  x:Name="calendar" HorizontalAlignment="Left" Margin="20,90,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.12,-1.213" Height="252" Width="259"
+            <Calendar  x:Name="calendar" Margin="20,90,510.4,0" VerticalAlignment="Top" RenderTransformOrigin="0.12,-1.213" Height="254"
               Style="{StaticResource styleCalendar}" SelectedDatesChanged="calendar_SelectedDatesChanged"/>
         </StackPanel>
+        <Label Content="Klient:" Height="32" Margin="296,316,387.6,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.6,-0.145"/>
+        <Label Content="Koniec wizyty:" Height="35" Margin="296,217,387.6,0" VerticalAlignment="Top" FontSize="15"/>
+        <Label Content="Imię i nazwisko:" Height="32" Margin="296,284,376.6,0" VerticalAlignment="Top" FontSize="15"/>
+        <Label Content="Imię i nazwisko:" Height="32" Margin="300,348,372.6,0" VerticalAlignment="Top" FontSize="15" RenderTransformOrigin="0.399,-0.053"/>
+        <Label x:Name="employeeNameText" Content="Imię i nazwisko" Height="32" Margin="421,284,227.6,0" VerticalAlignment="Top" FontSize="15"/>
+        <Label x:Name="customerNameText" Content="Imię i nazwisko" Height="32" Margin="421,348,227.6,0" VerticalAlignment="Top" FontSize="15"/>
+        <Label x:Name="finishDateText" Content="Koniec wizyty" Height="35" Margin="421,217,173.6,0" VerticalAlignment="Top" FontSize="15"/>
+        <Label Content="Samochód:" Height="37" Margin="571,257,112.6,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+        <Label Content="Marka:" Height="32" Margin="571,289,160.6,0" VerticalAlignment="Top" FontSize="15"/>
+        <Label Content="Numer telefonu:" Height="32" Margin="300,380,372.6,0" VerticalAlignment="Top" FontSize="15" RenderTransformOrigin="0.399,-0.053"/>
+        <Label x:Name="phoneNumberText" Content="numer telefonu" Height="32" Margin="421,380,226.6,0" VerticalAlignment="Top" FontSize="15"/>
+        <Label Content="Model:" Height="32" Margin="571,321,160.6,0" VerticalAlignment="Top" FontSize="15" RenderTransformOrigin="0.548,0.188"/>
+        <Label Content="Rejestracja:" Height="32" Margin="571,353,134.6,0" VerticalAlignment="Top" FontSize="15" RenderTransformOrigin="0.376,2.221"/>
+        <Label x:Name="brandText" Content="Marka" Height="32" Margin="665,289,9.6,0" VerticalAlignment="Top" FontSize="15"/>
+        <Label x:Name="modelText" Content="Model" Height="32" Margin="665,321,9.6,0" VerticalAlignment="Top" FontSize="15"/>
+        <Label x:Name="registrationNumberText" Content="Rejesrtacja" Height="32" Margin="665,353,9.6,0" VerticalAlignment="Top" FontSize="15"/>
 
 
     </Grid>

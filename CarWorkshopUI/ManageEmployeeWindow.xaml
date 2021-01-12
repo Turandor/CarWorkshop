@@ -7,18 +7,20 @@
         mc:Ignorable="d"
         Title="ManageEmployeeWindow" Height="450" Width="800">
     <Grid>
-        <Label Content="Dodaj Pracownika" HorizontalAlignment="Left" Height="37" Margin="42,37,0,0" VerticalAlignment="Top" Width="181" FontSize="20" FontWeight="Bold"/>
+        <Label Content="Dane Pracownika" HorizontalAlignment="Left" Height="37" Margin="42,37,0,0" VerticalAlignment="Top" Width="181" FontSize="20" FontWeight="Bold"/>
         <Label Content="Lista Pracowników" HorizontalAlignment="Left" Height="37" Margin="385,37,0,0" VerticalAlignment="Top" Width="185" FontSize="20" FontWeight="Bold"/>
         <Label Content="Imię:" HorizontalAlignment="Left" Height="32" Margin="42,74,0,0" VerticalAlignment="Top" Width="80" FontSize="15"/>
         <Label Content="Nazwisko:" HorizontalAlignment="Left" Height="32" Margin="42,139,0,0" VerticalAlignment="Top" Width="80" FontSize="15" RenderTransformOrigin="0.333,-0.469"/>
         <Label Content="Specjalizacja:" HorizontalAlignment="Left" Height="32" Margin="42,204,0,0" VerticalAlignment="Top" Width="111" FontSize="15" RenderTransformOrigin="0.499,-0.369"/>
-        <TextBox x:Name="firstNameText" HorizontalAlignment="Left" Height="23" Margin="42,111,0,0" TextWrapping="Wrap" Text="Bob" VerticalAlignment="Top" Width="261"/>
-        <TextBox x:Name="lastNameText" HorizontalAlignment="Left" Height="23" Margin="42,176,0,0" TextWrapping="Wrap" Text="McDonald" VerticalAlignment="Top" Width="261"/>
-        <TextBox x:Name="specializationText" HorizontalAlignment="Left" Height="23" Margin="42,241,0,0" TextWrapping="Wrap" Text="Wulkanizator" VerticalAlignment="Top" Width="261"/>
-        <Button x:Name="addEmployeeButton" Content="Dodaj pracownika" HorizontalAlignment="Left" Margin="385,360,0,0" VerticalAlignment="Top" Width="185" Height="41" FontSize="18" Click="addEmployeeButton_Click" RenderTransformOrigin="3.305,2.576"/>
+        <TextBox x:Name="firstNameText" HorizontalAlignment="Left" Height="23" Margin="42,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="261"/>
+        <TextBox x:Name="lastNameText" HorizontalAlignment="Left" Height="23" Margin="42,176,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="261"/>
+        <TextBox x:Name="specializationText" HorizontalAlignment="Left" Height="23" Margin="42,241,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="261"/>
+        <Button x:Name="addEmployeeButton" Content="Dodaj" HorizontalAlignment="Left" Margin="385,360,0,0" VerticalAlignment="Top" Width="121.33" Height="41" FontSize="18" Click="addEmployeeButton_Click" RenderTransformOrigin="3.305,2.576"/>
         <Button x:Name="goBackButton" Content="Wróć" HorizontalAlignment="Left" Height="26" Margin="42,375,0,0" VerticalAlignment="Top" Width="58" FontSize="18" Click="goBackButton_Click"/>
-        <Button x:Name="deleteEmployee" Content="Usuń pracownika" HorizontalAlignment="Left" Margin="570,360,0,0" VerticalAlignment="Top" Width="179" Height="41" FontSize="18" Click="deleteEmployee_Click"/>
-        <ListView x:Name="listEmployeesListView" HorizontalAlignment="Left" Height="283" Margin="385,78,0,0" VerticalAlignment="Top" Width="364" ItemsSource="{Binding SourceCollection}">
+        <Button x:Name="deleteEmployee" Content="Usuń" HorizontalAlignment="Left" Margin="627,360,0,0" VerticalAlignment="Top" Width="121.33" Height="41" FontSize="18" Click="deleteEmployee_Click"/>
+        <Button x:Name="editEmployeeButton" Content="Edytuj" HorizontalAlignment="Left" Margin="506,360,0,0" VerticalAlignment="Top" Width="122" Height="41" FontSize="18" RenderTransformOrigin="3.305,2.576" Click="editEmployeeButton_Click"/>
+
+        <ListView x:Name="listEmployeesListView" HorizontalAlignment="Left" Height="283" Margin="385,78,0,0" VerticalAlignment="Top" Width="364" ItemsSource="{Binding SourceCollection}" SelectionChanged="listEmployeesListView_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="Auto" Header="ID" DisplayMemberBinding="{Binding idEmployee}"/>
@@ -28,6 +30,5 @@
                 </GridView>
             </ListView.View>
         </ListView>
-
     </Grid>
 </Window>

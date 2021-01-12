@@ -21,11 +21,21 @@ namespace CarWorkshopUI
     public partial class BrowseCalendarWindow : Window
     {
         List<AppointmentModel> dailyAppointments = new List<AppointmentModel>();
+        List<CustomerModel> customers = new List<CustomerModel>();
+        List<CarModel> cars = new List<CarModel>();
+        List<EmployeeModel> employees = new List<EmployeeModel>();
+        AppointmentModel selectedAppointment = new AppointmentModel();
+        CustomerModel selectedCustomer = new CustomerModel();
+        CarModel selectedCar = new CarModel();
+        EmployeeModel selectedEmployee = new EmployeeModel();
 
         public BrowseCalendarWindow()
         {
             InitializeComponent();
             loadAppointmentsList();
+            customers = DatabaseAccess.loadCustomers();
+            cars = DatabaseAccess.loadCars();
+            employees = DatabaseAccess.loadEmployees();
         }
 
         private void goBackButton_Click(object sender, RoutedEventArgs e)
@@ -52,6 +62,27 @@ namespace CarWorkshopUI
                 listOrdersListView.ItemsSource = dailyAppointments.FindAll(x => x.date.Date == DateTime.Now.Date);
             else
                 listOrdersListView.ItemsSource = dailyAppointments.FindAll(x => x.date.Date == calendar.SelectedDate);
+        }
+
+        private void listOrdersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectedAppointment = (dynamic)listOrdersListView.SelectedItems[0];
+            selectedCar = cars.Find(x => x.idCar == selectedAppointment.idCar);
+            selectedCustomer = customers.Find(x => x.idCustomer == selectedCar.idCustomer);
+            selectedEmployee = employees.Find(x => x.idEmployee == selectedAppointment.idEmployee);
+
+            finishDateText.Content = AppointmentModel.GetFinishDate(selectedAppointment.date, selectedAppointment.estimatedTime);
+            employeeNameText.Content = selectedEmployee.firstName + " " + selectedEmployee.lastName;
+            customerNameText.Content = selectedCustomer.firstName + " " + selectedCustomer.lastName;
+            phoneNumberText.Content = selectedCustomer.phoneNumber;
+            modelText.Content = selectedCar.model;
+            brandText.Content = selectedCar.brand;
+            registrationNumberText.Content = selectedCar.registrationNumber;
+
+
+
+
+
         }
     }
 }

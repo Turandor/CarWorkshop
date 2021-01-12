@@ -53,17 +53,17 @@ namespace CarWorkshopUI
 
         private void addOrdersButton_Click(object sender, RoutedEventArgs e)
         {
-            OrdersModel orders = new OrdersModel();
+            OrdersModel order = new OrdersModel();
 
-            orders.idParts = int.Parse(idPartsText.Text);
-            orders.amount = int.Parse(amountText.Text);  
-            orders.orderDate = RoundUp(DateTime.Now,TimeSpan.FromMinutes(1));
-            orders.realizationDate = orders.orderDate.AddDays(int.Parse(deliveryTimeText.Text));
-            orders.status = "w realizacji";
-            orders.bookedAmount = 0;
+            order.idParts = int.Parse(idPartsText.Text);
+            order.amount = int.Parse(amountText.Text);  
+            order.orderDate = RoundUp(DateTime.Now,TimeSpan.FromMinutes(1));
+            order.realizationDate = order.orderDate.AddDays(int.Parse(deliveryTimeText.Text));
+            order.status = "w realizacji";
+            order.bookedAmount = 0;
             
 
-            DatabaseAccess.saveOrders(orders);
+            DatabaseAccess.saveOrders(order);
 
             idPartsText.Text = "";
             partNameText.Text = "";
@@ -121,6 +121,23 @@ namespace CarWorkshopUI
                 selectedPart = warehouse.Find(x => x.idParts == int.Parse(idPartsText.Text));
             if (selectedPart != null)
                 partNameText.Text = selectedPart.partName;
+        }
+
+        private void listOrdersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                OrdersModel selectedOrder = (dynamic)listOrdersListView.SelectedItems[0];
+                //CustomerModel selectedCustomer = customers.Find(x => x.idCustomer == selectedCar.idCustomer);
+
+                idPartsText.Text = selectedOrder.idParts.ToString();
+                amountText.Text = selectedOrder.amount.ToString();
+                deliveryTimeText.Text = (selectedOrder.realizationDate - selectedOrder.orderDate).Days.ToString();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+            }
+
         }
     }
 }

@@ -7,11 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Label Content="PANEL MENEDŻERSKI" Height="46" Margin="257,10,256.6,0" VerticalAlignment="Top" FontSize="26" FontWeight="Bold"/>
-        <Button x:Name="manageEmployeeButton" Content="Zarządzaj pracownikami" HorizontalAlignment="Left" Height="54" Margin="50,80,0,0" VerticalAlignment="Top" Width="225" FontSize="18" Click="manageEmployeeButton_Click"/>
-        <Button x:Name="manageWarehouseButton" Content="Zarządzaj magazynem" HorizontalAlignment="Right" Height="54" Margin="0,80,50,0" VerticalAlignment="Top" Width="225" FontSize="18" Click="manageWarehouseButton_Click"/>
-        <Button x:Name="manageOrdersButton" Content="Zarządzaj zamówieniami" HorizontalAlignment="Right" Height="54" Margin="0,201,50,0" VerticalAlignment="Top" Width="225" FontSize="18" Click="manageOrdersButton_Click"/>
-        <Button x:Name="addTaskButton" Content="Dodaj zadanie" Height="54" Margin="50,201,517,0" VerticalAlignment="Top" FontSize="18" Click="addTaskButton_Click"/>
-        <Button x:Name="browseCalendarButton_Copy" Content="Przeglądanie kalendarza" Height="54" Margin="50,312,517,0" VerticalAlignment="Top" FontSize="18" Click="browseCalendarButton_Click"/>
+        <Label Content="PANEL MENEDŻERSKI" Height="46" HorizontalAlignment="Center" Margin="257,10,256.6,0" VerticalAlignment="Top" FontSize="26" FontWeight="Bold"/>
+        <Button x:Name="manageEmployeeButton" Content="Zarządzaj pracownikami" HorizontalAlignment="Center" Height="54" VerticalAlignment="Top" Width="207" FontSize="18" Click="manageEmployeeButton_Click" Margin="286,304,300.6,0"/>
+        <Button x:Name="manageWarehouseButton" Content="Zarządzaj magazynem" HorizontalAlignment="Right" Height="54" Margin="0,105,49.6,0" VerticalAlignment="Top" Width="207" FontSize="18" Click="manageWarehouseButton_Click"/>
+        <Button x:Name="manageOrdersButton" Content="Zarządzaj zamówieniami" HorizontalAlignment="Left" Height="54" Margin="50,205,0,0" VerticalAlignment="Top" Width="207" FontSize="18" Click="manageOrdersButton_Click"/>
+        <Button x:Name="addTaskButton" Content="Dodaj zadanie" HorizontalAlignment="Left" Height="54" Margin="50,105,0,0" VerticalAlignment="Top" Width="207" FontSize="18" Click="addTaskButton_Click"/>
+        <Button x:Name="browseCalendarButton" Content="Przeglądanie kalendarza" HorizontalAlignment="Center" Height="54" Margin="286,105,300.6,0" VerticalAlignment="Top" Width="207" FontSize="18" Click="browseCalendarButton_Click"/>
+        <Button x:Name="manageCarsButton" Content="Zarządzaj samochodami" HorizontalAlignment="Center" Height="54" Margin="286,205,300.6,0" VerticalAlignment="Top" Width="207" FontSize="18" Click="manageCarsButton_Click"/>
+        <Button x:Name="manageCustomersButton" Content="Zarządzaj klientami" HorizontalAlignment="Right" Height="54" Margin="0,205,49.6,0" VerticalAlignment="Top" Width="207" FontSize="18" Click="manageCustomersButton_Click"/>
     </Grid>
 </Window>

@@ -14,6 +14,6 @@ namespace CarWorkshopLibrary
         public DateTime orderDate { get; set; }
         public DateTime realizationDate { get; set; }
         public string status { get; set; }
-        public int bookedAmount { get; set; } // Dodać by ustawiało się na zero przy startcie
+        public int bookedAmount { get; set; }
     }
 }

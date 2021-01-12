@@ -18,11 +18,13 @@ namespace CarWorkshopUI
     public partial class ManageWarehouseWindow : Window
     {
         List<WarehouseModel> warehouse = new List<WarehouseModel>();
+        List<OrdersModel> orders = new List<OrdersModel>();
         public ManageWarehouseWindow()
         {
             InitializeComponent();
 
             loadWarehouseList();
+            orders = DatabaseAccess.loadOrders();
         }
 
         private void loadWarehouseList()
@@ -44,38 +46,81 @@ namespace CarWorkshopUI
             this.Close();
         }
 
-        private void addWarehouseButton_Click(object sender, RoutedEventArgs e)
+        private void addPartButton_Click(object sender, RoutedEventArgs e)
         {
-            WarehouseModel warehouse = new WarehouseModel();
+            WarehouseModel selectedPart = new WarehouseModel();
 
-            warehouse.partName = partNameText.Text;
-            warehouse.producent = producentText.Text;
-            warehouse.price = double.Parse(priceText.Text);
-            warehouse.stockQuantity = int.Parse(stockQuantityText.Text);
+            selectedPart.partName = partNameText.Text;
+            selectedPart.producent = producentText.Text;
+            selectedPart.price = double.Parse(priceText.Text);
+            selectedPart.stockQuantity = int.Parse(stockQuantityText.Text);
 
-            DatabaseAccess.saveWarehouse(warehouse);
+            DatabaseAccess.saveWarehouse(selectedPart);
 
-            partNameText.Text = "";
-            producentText.Text = "";
-            priceText.Text = "";
-            stockQuantityText.Text = "";
+            partNameText.Text = null;
+            producentText.Text = null;
+            priceText.Text = null;
+            stockQuantityText.Text = null;
 
             loadWarehouseList();
         }
 
-        private void changeStockQuantityButton_Click(object sender, RoutedEventArgs e)
+        private void editPartButton_Click(object sender, RoutedEventArgs e)
         {
-            WarehouseModel warehouse = new WarehouseModel();
+            WarehouseModel selectedPart = (dynamic)listWarehouseListView.SelectedItems[0];
 
-            var selectedPart = (dynamic)listWarehouseListView.SelectedItems[0];
+            selectedPart.partName = partNameText.Text;
+            selectedPart.producent = producentText.Text;
+            selectedPart.price = double.Parse(priceText.Text);
+            selectedPart.stockQuantity = int.Parse(stockQuantityText.Text);
 
-            selectedPart.stockQuantity = stockQuantityChangeText.Text;
-            warehouse.idParts = selectedPart.idParts;
-            warehouse.stockQuantity = selectedPart.stockQuantity;
-
-            DatabaseAccess.updateWarehouse(warehouse);
+            DatabaseAccess.updateWarehouse(selectedPart);
 
             loadWarehouseList();
+
+            partNameText.Text = null;
+            producentText.Text = null;
+            priceText.Text = null;
+            stockQuantityText.Text = null;
+        }
+
+        private void deletePartButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            WarehouseModel selectedPart = (dynamic)listWarehouseListView.SelectedItems[0];
+            List<OrdersModel> selectedOrders = orders.FindAll(x => x.idParts == selectedPart.idParts); 
+
+            DatabaseAccess.deleteWarehouse(selectedPart);
+
+            foreach (var item in selectedOrders)
+            {
+                DatabaseAccess.deleteOrder(item);
+            }
+
+
+            loadWarehouseList();
+            orders = DatabaseAccess.loadOrders();
+
+            partNameText.Text = null;
+            producentText.Text = null;
+            priceText.Text = null;
+            stockQuantityText.Text = null;
+        }
+
+        private void listWarehouseListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                WarehouseModel selectedPart = (dynamic)listWarehouseListView.SelectedItems[0];
+
+                partNameText.Text = selectedPart.partName;
+                producentText.Text = selectedPart.producent;
+                priceText.Text = selectedPart.price.ToString();
+                stockQuantityText.Text = selectedPart.stockQuantity.ToString();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+            }
         }
     }
 

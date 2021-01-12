@@ -83,6 +83,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ManageCarsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ManageCustomersWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ManageEmployeeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -101,6 +109,12 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ManageCarsWindow.xaml.cs">
+      <DependentUpon>ManageCarsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ManageCustomersWindow.xaml.cs">
+      <DependentUpon>ManageCustomersWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ManageEmployeeWindow.xaml.cs">
       <DependentUpon>ManageEmployeeWindow.xaml</DependentUpon>
     </Compile>

@@ -36,6 +36,23 @@ namespace CarWorkshopLibrary
             }
         }
 
+        public static void updateCustomer(CustomerModel customer)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                cnn.Execute("update Customer set firstName = @firstName, lastName = @lastName, phoneNumber = @phoneNumber, adress=@adress where idCustomer = @idCustomer", customer);
+            }
+        }
+
+        public static void deleteCustomer(CustomerModel customer)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                cnn.Execute("delete from Customer where idCustomer=@idCustomer", customer);
+            }
+        }
+
+
         /************************** Employee *********************************/
 
         public static List<EmployeeModel> loadEmployees()
@@ -60,6 +77,14 @@ namespace CarWorkshopLibrary
                 cnn.Execute("delete from Employee where idEmployee=@idEmployee and firstName=@firstName and lastName=@lastName and specialization=@specialization", employee);
             }
         }
+
+        public static void updateEmployee(EmployeeModel employee)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                cnn.Execute("update Employee set firstName = @firstName, lastName = @lastName, specialization = @specialization where idEmployee = @idEmployee", employee);
+            }
+        }
         /********************** Warehouse ***********************************/
         public static List<WarehouseModel> loadWarehouse()
         {
@@ -82,7 +107,15 @@ namespace CarWorkshopLibrary
         {
             using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
             {
-                cnn.Execute("update Warehouse set stockQuantity = @stockQuantity where idParts = @idParts", warehouse);
+                cnn.Execute("update Warehouse set partName = @partName, producent = @producent, price = @price, stockQuantity = @stockQuantity where idParts = @idParts", warehouse);
+            }
+        }
+
+        public static void deleteWarehouse(WarehouseModel warehouse)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                cnn.Execute("delete from Warehouse where idParts=@idParts", warehouse);
             }
         }
 
@@ -127,6 +160,14 @@ namespace CarWorkshopLibrary
             }
         }
 
+        public static void deleteOrder(OrdersModel order)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                cnn.Execute("delete from Orders where idOrder=@idOrder", order);
+            }
+        }
+
         /********************************* Cars ***********************************/
         public static List<CarModel> loadCars()
         {
@@ -145,6 +186,21 @@ namespace CarWorkshopLibrary
             }
         }
 
+        public static void updateCar(CarModel car)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                cnn.Execute("update Car set brand = @brand, model = @model, registrationNumber = @registrationNumber where idCar = @idCar", car);
+            }
+        }
+
+        public static void deleteCar(CarModel car)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                cnn.Execute("delete from Car where idCar=@idCar", car);
+            }
+        }
         /*********************************** Services **********************************/
         public static List<ServiceModel> loadServices()
         {
@@ -174,6 +230,13 @@ namespace CarWorkshopLibrary
             }
         }
 
+        public static void deleteAppointment(AppointmentModel appointment)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(loadConnectionString()))
+            {
+                cnn.Execute("delete from Appointment where idAppointment=@idAppointment", appointment);
+            }
+        }
 
         /********************************** Workplace ***********************/
         public static List<WorkplaceModel> loadWorkplace()
