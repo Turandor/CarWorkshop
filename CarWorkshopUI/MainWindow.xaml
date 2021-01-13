@@ -5,15 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarWorkshopUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Panel menadżerski" Height="450" Width="800">
+
+
     <Grid>
-        <Label Content="PANEL MENEDŻERSKI" Height="46" HorizontalAlignment="Center" Margin="257,10,256.6,0" VerticalAlignment="Top" FontSize="26" FontWeight="Bold"/>
-        <Button x:Name="manageEmployeeButton" Content="Zarządzaj pracownikami" HorizontalAlignment="Center" Height="54" VerticalAlignment="Top" Width="207" FontSize="18" Click="manageEmployeeButton_Click" Margin="286,304,300.6,0"/>
-        <Button x:Name="manageWarehouseButton" Content="Zarządzaj magazynem" HorizontalAlignment="Right" Height="54" Margin="0,105,49.6,0" VerticalAlignment="Top" Width="207" FontSize="18" Click="manageWarehouseButton_Click"/>
-        <Button x:Name="manageOrdersButton" Content="Zarządzaj zamówieniami" HorizontalAlignment="Left" Height="54" Margin="50,205,0,0" VerticalAlignment="Top" Width="207" FontSize="18" Click="manageOrdersButton_Click"/>
-        <Button x:Name="addTaskButton" Content="Dodaj zadanie" HorizontalAlignment="Left" Height="54" Margin="50,105,0,0" VerticalAlignment="Top" Width="207" FontSize="18" Click="addTaskButton_Click"/>
-        <Button x:Name="browseCalendarButton" Content="Przeglądanie kalendarza" HorizontalAlignment="Center" Height="54" Margin="286,105,300.6,0" VerticalAlignment="Top" Width="207" FontSize="18" Click="browseCalendarButton_Click"/>
-        <Button x:Name="manageCarsButton" Content="Zarządzaj samochodami" HorizontalAlignment="Center" Height="54" Margin="286,205,300.6,0" VerticalAlignment="Top" Width="207" FontSize="18" Click="manageCarsButton_Click"/>
-        <Button x:Name="manageCustomersButton" Content="Zarządzaj klientami" HorizontalAlignment="Right" Height="54" Margin="0,205,49.6,0" VerticalAlignment="Top" Width="207" FontSize="18" Click="manageCustomersButton_Click"/>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"  />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Label Content="PANEL MENEDŻERSKI" Height="46" Grid.ColumnSpan="3" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="26" FontWeight="Bold" Margin="0,30,0,29" Width="316"/>
+        <Button x:Name="manageEmployeeButton"  Content="Zarządzaj pracownikami" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Height="54" VerticalAlignment="Center" Width="208" FontSize="18" Click="manageEmployeeButton_Click"/>
+        <Button x:Name="manageWarehouseButton" Content="Zarządzaj magazynem" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Height="54" VerticalAlignment="Center" Width="208" FontSize="18" Click="manageWarehouseButton_Click" />
+        <Button x:Name="manageOrdersButton" Content="Zarządzaj zamówieniami" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" Height="54" VerticalAlignment="Center" Width="208" FontSize="18" Click="manageOrdersButton_Click"/>
+        <Button x:Name="addTaskButton" Content="Dodaj zadanie" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Height="54" VerticalAlignment="Center" Width="208" FontSize="18" Click="addTaskButton_Click"/>
+        <Button x:Name="browseCalendarButton" Content="Przeglądanie kalendarza" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Height="54" VerticalAlignment="Center" Width="208" FontSize="18" Click="browseCalendarButton_Click"/>
+        <Button x:Name="manageCarsButton" Content="Zarządzaj samochodami" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" Height="54" VerticalAlignment="Center" Width="208" FontSize="18" Click="manageCarsButton_Click"/>
+        <Button x:Name="manageCustomersButton" Content="Zarządzaj klientami" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Height="54" VerticalAlignment="Center" Width="208" FontSize="18" Click="manageCustomersButton_Click"/>
+
     </Grid>
 </Window>

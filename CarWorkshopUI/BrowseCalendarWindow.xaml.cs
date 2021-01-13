@@ -66,23 +66,24 @@ namespace CarWorkshopUI
 
         private void listOrdersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedAppointment = (dynamic)listOrdersListView.SelectedItems[0];
-            selectedCar = cars.Find(x => x.idCar == selectedAppointment.idCar);
-            selectedCustomer = customers.Find(x => x.idCustomer == selectedCar.idCustomer);
-            selectedEmployee = employees.Find(x => x.idEmployee == selectedAppointment.idEmployee);
+            try
+            {
+                selectedAppointment = (dynamic)listOrdersListView.SelectedItems[0];
+                selectedCar = cars.Find(x => x.idCar == selectedAppointment.idCar);
+                selectedCustomer = customers.Find(x => x.idCustomer == selectedCar.idCustomer);
+                selectedEmployee = employees.Find(x => x.idEmployee == selectedAppointment.idEmployee);
 
-            finishDateText.Content = AppointmentModel.GetFinishDate(selectedAppointment.date, selectedAppointment.estimatedTime);
-            employeeNameText.Content = selectedEmployee.firstName + " " + selectedEmployee.lastName;
-            customerNameText.Content = selectedCustomer.firstName + " " + selectedCustomer.lastName;
-            phoneNumberText.Content = selectedCustomer.phoneNumber;
-            modelText.Content = selectedCar.model;
-            brandText.Content = selectedCar.brand;
-            registrationNumberText.Content = selectedCar.registrationNumber;
-
-
-
-
-
+                finishDateText.Content = AppointmentModel.GetFinishDate(selectedAppointment.date, selectedAppointment.estimatedTime);
+                employeeNameText.Content = selectedEmployee.firstName + " " + selectedEmployee.lastName;
+                customerNameText.Content = selectedCustomer.firstName + " " + selectedCustomer.lastName;
+                phoneNumberText.Content = selectedCustomer.phoneNumber;
+                modelText.Content = selectedCar.model;
+                brandText.Content = selectedCar.brand;
+                registrationNumberText.Content = selectedCar.registrationNumber;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+            }
         }
     }
 }

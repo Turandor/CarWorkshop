@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarWorkshopUI"
         mc:Ignorable="d"
-        Title="ManageCarsWindow" Height="450" Width="800">
+        Title="Zarządzanie samochodami" Height="450" Width="800">
     <Grid>
         <Label Content="Edytuj Samochód" HorizontalAlignment="Left" Height="37" Margin="42,37,0,0" VerticalAlignment="Top" Width="181" FontSize="20" FontWeight="Bold"/>
         <Label Content="Lista Samochodów" HorizontalAlignment="Left" Height="37" Margin="385,37,0,0" VerticalAlignment="Top" Width="185" FontSize="20" FontWeight="Bold"/>

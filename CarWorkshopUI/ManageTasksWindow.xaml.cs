@@ -318,7 +318,7 @@ namespace CarWorkshopUI
                         availableWorkplaces.Remove(availableWorkplaces.Find(x => x.idWorkplace == item.idWorkplace));
                     }
 
-                    if (service.serviceName == "ogólny")
+                    if (service.serviceCategory == "ogólny")
                     {
                         chosenEmployee = availableEmployees[0];
                         chosenWorkplace = availableWorkplaces.Find(x => x.workplaceName == service.serviceCategory);
