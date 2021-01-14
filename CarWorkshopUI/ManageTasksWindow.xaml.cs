@@ -225,59 +225,62 @@ namespace CarWorkshopUI
                 nearestDate = AppointmentModel.changeDateToNextWorkDay(nearestDate);
             }
 
-            foreach (var item in neededParts)
+            if (neededParts.Length != 0)
             {
-                part = warehouse.Find(x => x.partName == item); //by names 
-                orderedPart = orders.Find(x => x.idParts == part.idParts && x.amount > x.bookedAmount && x.status != "zrealizowane");
-                if (part == default)
+                foreach (var item in neededParts)
                 {
-                    System.Windows.Forms.MessageBox.Show("Część: " + item + " nie jest znana");
-                    chosenPart = new PartObject(item, PartStatus.Unavailable, 0);
-                    chosenPartsList.Add(chosenPart);
-                    return;
-                }
-                else if (part.stockQuantity == 0)  
-                {
-                    pendingOrder = orders.Find(x => x.idParts == part.idParts && x.status != "zrealizowane" && x.amount > x.bookedAmount);  
-                    if (pendingOrder == default)
+                    part = warehouse.Find(x => x.partName == item); //by names 
+                    orderedPart = orders.Find(x => x.idParts == part.idParts && x.amount > x.bookedAmount && x.status != "zrealizowane");
+                    if (part == default)
                     {
-                        result = System.Windows.Forms.MessageBox.Show("Brak części: " + item + " w magazynie.", caption, buttons); //rozwinąć ew (przechodzenie do zamówienia części
-                        if(result == System.Windows.Forms.DialogResult.Yes)
+                        System.Windows.Forms.MessageBox.Show("Część: " + item + " nie jest znana");
+                        chosenPart = new PartObject(item, PartStatus.Unavailable, 0);
+                        chosenPartsList.Add(chosenPart);
+                        return;
+                    }
+                    else if (part.stockQuantity == 0)
+                    {
+                        pendingOrder = orders.Find(x => x.idParts == part.idParts && x.status != "zrealizowane" && x.amount > x.bookedAmount);
+                        if (pendingOrder == default)
                         {
-                            ManageOrdersWindow objManageOrdersWindow = new ManageOrdersWindow();
-                            objManageOrdersWindow.Show();
-                            this.Close();
+                            result = System.Windows.Forms.MessageBox.Show("Brak części: " + item + " w magazynie.", caption, buttons); //rozwinąć ew (przechodzenie do zamówienia części
+                            if (result == System.Windows.Forms.DialogResult.Yes)
+                            {
+                                ManageOrdersWindow objManageOrdersWindow = new ManageOrdersWindow();
+                                objManageOrdersWindow.Show();
+                                this.Close();
+                            }
+                            else
+                            {
+                                chosenPart = new PartObject(item, PartStatus.Unavailable, 0);
+                                chosenPartsList.Add(chosenPart);
+                                return;
+                            }
                         }
                         else
                         {
-                            chosenPart = new PartObject(item, PartStatus.Unavailable, 0);
-                            chosenPartsList.Add(chosenPart);
-                            return;
+                            if (nearestDate < pendingOrder.realizationDate)
+                            {
+                                nearestDate = AppointmentModel.RoundUp(pendingOrder.realizationDate, TimeSpan.FromMinutes(15)); // If parts are ordered take new available nearestDate
+                                if (!AppointmentModel.isWorkDay(nearestDate) || !AppointmentModel.isWorkHour(nearestDate))
+                                    nearestDate = AppointmentModel.changeDateToNextWorkDay(nearestDate);
+                                chosenPart = new PartObject(item, PartStatus.Ordered, orderedPart.amount);
+                                orders[orders.FindIndex(x => x.idOrder == orderedPart.idOrder)].bookedAmount += 1;
+                                chosenPartsList.Add(chosenPart);
+                            }
                         }
                     }
                     else
                     {
-                        if (nearestDate < pendingOrder.realizationDate)
-                        {
-                            nearestDate = AppointmentModel.RoundUp(pendingOrder.realizationDate, TimeSpan.FromMinutes(15)); // If parts are ordered take new available nearestDate
-                            if (!AppointmentModel.isWorkDay(nearestDate) || !AppointmentModel.isWorkHour(nearestDate))
-                                nearestDate = AppointmentModel.changeDateToNextWorkDay(nearestDate);
-                            chosenPart = new PartObject(item, PartStatus.Ordered, orderedPart.amount);
-                            orders[orders.FindIndex(x => x.idOrder == orderedPart.idOrder)].bookedAmount += 1;
-                            chosenPartsList.Add(chosenPart);
-                        }
+                        chosenPart = new PartObject(item, PartStatus.Available, part.stockQuantity);
+                        warehouse[warehouse.FindIndex(x => x.partName == item)].stockQuantity -= 1;
+                        chosenPartsList.Add(chosenPart);
                     }
-                }
-                else
-                {
-                    chosenPart = new PartObject(item,PartStatus.Available, part.stockQuantity);
-                    warehouse[warehouse.FindIndex(x => x.partName == item)].stockQuantity -= 1;
-                    chosenPartsList.Add(chosenPart);
-                }
 
-                confirmedNeededParts.Add(part);
+                    confirmedNeededParts.Add(part);
 
-            } //all parts ready
+                } //all parts ready
+            }
 
             if(!nearestDateCheckBox.IsChecked.Value)
             {
