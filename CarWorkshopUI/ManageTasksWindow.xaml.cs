@@ -119,7 +119,7 @@ namespace CarWorkshopUI
                                                     x.phoneNumber == customer.phoneNumber);
             }
 
-            car = cars.Find(x => x.registrationNumber == car.registrationNumber);
+            car = cars.Find(x => x.registrationNumber == registrationNumberText.Text);
             if (car == null)
             {
                 car = new CarModel();
@@ -146,13 +146,13 @@ namespace CarWorkshopUI
             foreach (var item in chosenPartsList)
             {
                 part = warehouse.Find(x => x.partName == item.partName);
-                if (item.partStatus == CarWorkshopLibrary.PartStatus.Ordered)
+                if (item.partStatus == PartStatus.Ordered)
                 {
                     orderedPart = orders.Find(x => x.idParts == part.idParts && x.amount >= x.bookedAmount && x.status != "zrealizowane");
                     orderedPart.bookedAmount += 1;
                     DatabaseAccess.updateOrderBookedAmount(orderedPart);
                 } 
-                else if (item.partStatus == CarWorkshopLibrary.PartStatus.Available)
+                else if (item.partStatus == PartStatus.Available)
                 {
                     part.stockQuantity -= 1;
                     DatabaseAccess.updateWarehouse(part);
