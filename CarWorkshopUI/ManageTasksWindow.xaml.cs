@@ -132,6 +132,11 @@ namespace CarWorkshopUI
                 cars = DatabaseAccess.loadCars();
                 car = cars.Find(x => x.registrationNumber == car.registrationNumber);
             }
+            else if(car.idCustomer != customer.idCustomer)
+            {
+                System.Windows.Forms.MessageBox.Show("Ten samochód nie należy do Ciebie");
+                return;
+            }
 
             //make appointment
             appointment.idCar = car.idCar;
@@ -207,7 +212,6 @@ namespace CarWorkshopUI
             List<EmployeeModel> availableEmployees = new List<EmployeeModel>();
             List<WorkplaceModel> availableWorkplaces = new List<WorkplaceModel>();
 
-            OrdersModel orderedPart;
             PartObject chosenPart = new PartObject("",PartStatus.Unavailable,0);
             MessageBoxButtons buttons = MessageBoxButtons.YesNo;
             string caption = "Czy chcesz ją zamówić?";
@@ -230,7 +234,6 @@ namespace CarWorkshopUI
                 foreach (var item in neededParts)
                 {
                     part = warehouse.Find(x => x.partName == item); //by names 
-                    orderedPart = orders.Find(x => x.idParts == part.idParts && x.amount > x.bookedAmount && x.status != "zrealizowane");
                     if (part == default)
                     {
                         System.Windows.Forms.MessageBox.Show("Część: " + item + " nie jest znana");
@@ -264,8 +267,8 @@ namespace CarWorkshopUI
                                 nearestDate = AppointmentModel.RoundUp(pendingOrder.realizationDate, TimeSpan.FromMinutes(15)); // If parts are ordered take new available nearestDate
                                 if (!AppointmentModel.isWorkDay(nearestDate) || !AppointmentModel.isWorkHour(nearestDate))
                                     nearestDate = AppointmentModel.changeDateToNextWorkDay(nearestDate);
-                                chosenPart = new PartObject(item, PartStatus.Ordered, orderedPart.amount);
-                                orders[orders.FindIndex(x => x.idOrder == orderedPart.idOrder)].bookedAmount += 1;
+                                chosenPart = new PartObject(item, PartStatus.Ordered, pendingOrder.amount);
+                                orders[orders.FindIndex(x => x.idOrder == pendingOrder.idOrder)].bookedAmount += 1;
                                 chosenPartsList.Add(chosenPart);
                             }
                         }
