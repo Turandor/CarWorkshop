@@ -35,41 +35,41 @@ The system includes management of:
 
 From main menu user can choose one of several activities
 
-![Main menu](./Screenshots/1.PNG)
+![Main menu](./Screenshots/1.png)
 
 In the employee menu user can add, edit and browse employees.
 
-![Employee menu](./Screenshots/2.PNG)
+![Employee menu](./Screenshots/2.png)
 
 Managing warehouse  allows to browse car parts and check if specific part is in the warehouse. Moreover, the user can add new parts, edit and delete them.
 
-![Warehouse menu](./Screenshots/3.PNG)
+![Warehouse menu](./Screenshots/3.png)
 
 Orders management consists in ordering parts that are needed to make repairs.
 
-![Order menu](./Screenshots/4.PNG)
+![Order menu](./Screenshots/4.png)
 
 Appointment management is the most important element of the project. In that window user can make an appointment by providing customer and car data, also user choses type of appointment, estimated repair time and needed parts. Then the method of appointment must be given by selecting the closest possible date or a specific one.
 
 If closest possible date is chosen then implemented alghoritm finds closest date when there will be free employee, workplace and parts are in warehouse.
 
-![Appointment menu](./Screenshots/5.PNG)
+![Appointment menu](./Screenshots/5.png)
 
 The calendar shows the appointments and their details.
 
-![Calendar](./Screenshots/6.PNG)
+![Calendar](./Screenshots/6.png)
 
 In the car menu user can browse, edit and delete cars. Adding new car can only be done via making new appointment.
 
 **Important note**: deleting car also delete its appointments.
 
-![Car menu](./Screenshots/7.PNG)
+![Car menu](./Screenshots/7.png)
 
 The last window allows to browse, add, edit, and delete customers. 
 
 **Important note**: deleting customer also delete his cars.
 
-![Customer menu](./Screenshots/8.PNG)
+![Customer menu](./Screenshots/8.png)
 
 ## Technologies
 Project was created in the following technologies:
