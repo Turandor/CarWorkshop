@@ -33,6 +33,42 @@ The system includes management of:
 * car parts
 * workshop work schedule
 
+From main menu user can choose one of several activities
+
+![Main menu](./images/1.png)
+
+In the employee menu user can add, edit and browse employees.
+
+![Employee menu](./images/2.png)
+
+Managing warehouse  allows to browse car parts and check if specific part is in the warehouse. Moreover, the user can add new parts, edit and delete them.
+
+![Warehouse menu](./images/3.png)
+
+Orders management consists in ordering parts that are needed to make repairs.
+
+![Order menu](./images/4.png)
+
+Appointment management is the most important element of the project. In that window user can make an appointment by providing customer and car data, also user choses type of appointment, estimated repair time and needed parts. Then the method of appointment must be given by selecting the closest possible date or a specific one.
+
+If closest possible date is chosen then implemented alghoritm finds closest date when there will be free employee, workplace and parts are in warehouse.
+
+![Appointment menu](./images/5.png)
+
+The calendar shows the appointments and their details.
+
+![Calendar](./images/6.png)
+
+In the car menu user can browse, edit and delete cars. Adding new car can only be done via making new appointment.
+
+**Important note**: deleting car also delete its appointments.
+![Car menu](./images/7.png)
+
+The last window allows to browse, add, edit, and delete customers. 
+
+**Important note**: deleting customer also delete his cars.
+![Customer menu](./images/8.png)
+
 ## Technologies
 Project was created in the following technologies:
 * C#
